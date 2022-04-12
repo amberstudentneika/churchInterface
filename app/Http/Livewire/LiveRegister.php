@@ -3,7 +3,7 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-
+use Hash;
 class LiveRegister extends Component
 {
     public $firstname, $lastname, $gender, $email, $password, $password_confirmation;
@@ -39,7 +39,7 @@ class LiveRegister extends Component
             'lastname'=>$this->lastname,
             'gender'=>$this->gender,
             'email'=>$this->email,
-            'password'=>$this->password,
+            'password'=>Hash::make($this->password),
         );
         http_build_query($data);
         curl_setopt($ch,CURLOPT_URL,$url);
