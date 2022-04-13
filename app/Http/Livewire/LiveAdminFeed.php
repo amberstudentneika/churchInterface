@@ -3,24 +3,25 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-
+use Livewire\WithFileUploads;
 class LiveAdminFeed extends Component
 {
+    use WithFileUploads;
     public $textPost=false;
-    public $cat, $heading, $contents, $uploadedFile;
+    public $cat, $heading, $contents, $photo;
 
     
     public function showMedia(){
         $this->textPost = true;        
     }
     public function hideMedia(){
-        $this->textPost = false;        
+        $this->textPost = false;    
+        $this->photo='';    
     }
     protected $rules=[
         'cat' => 'required',
         'contents' => 'required',
         'heading' => 'required',
-        // 'uploadedFile' => 'required',
     ];
 
     public function clearField(){
@@ -28,7 +29,7 @@ class LiveAdminFeed extends Component
         $this->heading='';
         $this->contents='';
         $this->contents='';
-        $this->uploadedFile='';
+        $this->photo='';
     }
     public function updated($propertyName){
         $this->validateOnly($propertyName);
@@ -38,22 +39,28 @@ class LiveAdminFeed extends Component
       $this->validate();
 // dd($this->textPost);
       if($this->textPost == true){
-          if($this->uploadedFile==null){
+          if($this->photo==null){
             session()->flash('error','Upload photo/video or click "remove" button.');
         }
       }
 
         $ch=curl_init();
-        $url = 'http://192.168.0.5:8081/api/post/store';
+        $url = 'http://192.168.0.3:8081/api/post/store';
+        
+        if($this->photo!='' || $this->photo!=null){
+            $photo=$this->photo->getClientOriginalName();
+            $this->photo->storePubliclyAs('storage',$photo,'gallery');
+        }elseif($this->photo=='' || $this->photo==null){
+            $photo=$this->photo;
+        }
         
         $data=array(
             'categoryID'=>$this->cat,
             'heading'=>$this->heading,
             'contents'=>$this->contents,
+            'photo'=>$this->photo,
         );
-        // dd($data);
         http_build_query($data);
-        
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_POST,true);
         curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
@@ -61,6 +68,7 @@ class LiveAdminFeed extends Component
 
         $results = curl_exec($ch);
         $results = json_decode($results,true);
+
         // $result = $results['status'];
         // if($result=="201"){
         //     $this->status=true;
@@ -74,25 +82,34 @@ class LiveAdminFeed extends Component
     {
         //view category
         $ch=curl_init();
-        $url = 'http://192.168.0.5:8081/api/category/index';
+        $url = 'http://192.168.0.3:8081/api/category/index';
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
         $results = curl_exec($ch);
         $results = json_decode($results,true);
-        $data = $results['data'];
+        $result= $results['status'];
+        if($result =='404'){
+            $data= array();
+        }elseif($result =='200'){
+            $data = $results['data'];
+        }
         curl_close($ch);
 
         //view posts
         $ch=curl_init();
-        $url = 'http://192.168.0.5:8081/api/post/index';
+        $url = 'http://192.168.0.3:8081/api/post/index';
         
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
 
         $results = curl_exec($ch);
         $results = json_decode($results,true);
-        $dataPost = $results['data'];
-        // dd($dataPost);
+        $result= $results['status'];
+        if($result =='404'){
+            $dataPost = array();
+        }elseif($result =='200'){
+            $dataPost = $results['data'];
+        }
         curl_close($ch);
 
         return view('livewire.live-admin-feed',compact('data','dataPost'));

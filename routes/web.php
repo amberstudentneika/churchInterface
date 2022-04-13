@@ -17,6 +17,7 @@ Route::get('/',[App\Http\Controllers\LoginController::class,'index'])->name('hom
 Route::get('/signup',[App\Http\Controllers\RegisterController::class,'index'])->name('register');
 Route::get('/feed',[App\Http\Controllers\AdminController::class,'index'])->name('adminFeed');
 Route::get('/category',[App\Http\Controllers\AdminController::class,'category'])->name('adminCategory');
+Route::get('/member/feed',[App\Http\Controllers\MemberController::class,'index'])->name('memberFeed');
 
 // Route::get('/test',function(){
 // return view('layouts.member');

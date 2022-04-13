@@ -59,17 +59,17 @@
                           <div class=' flex flex-col border-4 border-dashed w-full h-32 cursor-pointer hover:bg-gray-100 hover:border-gray-200 group'>
                               <div class='flex flex-col items-center justify-center pt-7'>
                                   <svg class="w-10 h-10 text-purple-400 group-hover:text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                               {{-- @if($uploadedFile== '')  --}}
+                               {{-- @if($photo== '')  --}}
                                <p class='lowercase text-sm text-gray-400 group-hover:text-purple-600 pt-1 tracking-wider'>upload either JPG, JPEG, PDF file</p>
                                {{-- @else --}}
-                               {{-- <p class='lowercase text-sm text-purple-600 pt-1 tracking-wider'>{{$uploadedFile->getClientOriginalName()}}</p> --}}
+                               {{-- <p class='lowercase text-sm text-purple-600 pt-1 tracking-wider'>{{$photo->getClientOriginalName()}}</p> --}}
                               {{-- @endif --}}
                               </div>
-                              <input wire:model="uploadedFile" type="file" class="" />
+                              <input wire:model="photo" type="file" class="" />
                             </div>  
                       </div>
                     </div>
-                    @error('uploadedFile')
+                    @error('photo')
                     <p class="text-red-500 text-xs italic mt-4">
                         {{ "*required" }}
                     </p>
@@ -123,7 +123,11 @@
               <p class="leading-snug">{{$post['body']}}</p>
             </div>
             <div class="mt-2">
-              <img class="object-cover w-full rounded-lg" src="https://images.unsplash.com/photo-1586398710270-760041494553?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1280&q=80" alt="">
+              @if($post['image']=="")
+              {{-- <img class="object-cover w-full rounded-lg" src="https://images.unsplash.com/photo-1586398710270-760041494553?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1280&q=80" alt=""> --}}
+              @elseif($post['image'])
+              <img class="object-cover w-full rounded-lg" src="{{url('storage/gallery/storage/568165.png')}}" alt="">
+              @endif
               <div class="flex justify-center">
                 <div class="py-2 flex flex-row items-center">
                   <button class="flex flex-row items-center focus:outline-none focus:shadow-outline rounded-lg">
