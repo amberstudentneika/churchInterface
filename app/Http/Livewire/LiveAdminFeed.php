@@ -8,6 +8,7 @@ class LiveAdminFeed extends Component
 {
     use WithFileUploads;
     public $textPost=false;
+    public $postID;
     public $cat, $heading, $contents, $photo;
 
     
@@ -29,7 +30,7 @@ class LiveAdminFeed extends Component
         $this->heading='';
         $this->contents='';
         $this->contents='';
-        $this->photo='';
+        $this->photo=''; 
     }
     public function updated($propertyName){
         $this->validateOnly($propertyName);
@@ -45,20 +46,21 @@ class LiveAdminFeed extends Component
       }
 
         $ch=curl_init();
-        $url = 'http://192.168.0.3:8081/api/post/store';
+        $url = 'http://192.168.0.4:8081/api/post/store';
         
         if($this->photo!='' || $this->photo!=null){
             $photo=$this->photo->getClientOriginalName();
             $this->photo->storePubliclyAs('storage',$photo,'gallery');
         }elseif($this->photo=='' || $this->photo==null){
-            $photo=$this->photo;
+            $result=2;
+            // $photo=$this->photo;
         }
         
         $data=array(
             'categoryID'=>$this->cat,
             'heading'=>$this->heading,
             'contents'=>$this->contents,
-            'photo'=>$this->photo,
+            'photo'=>$photo,
         );
         http_build_query($data);
         curl_setopt($ch,CURLOPT_URL,$url);
@@ -69,20 +71,51 @@ class LiveAdminFeed extends Component
         $results = curl_exec($ch);
         $results = json_decode($results,true);
 
+        curl_close($ch);
+        $this->clearField();
+    }
+
+    public function showEdit($id){
+        $this->postID = $id;
+        $ch=curl_init();
+        $url = 'http://192.168.0.4:8081/api/post/show/'.$this->postID;
+        
+        //$mID=session()->get('memberID');//should be ADMIN not member
+      
+        curl_setopt($ch,CURLOPT_URL,$url);
+        curl_setopt($ch,CURLOPT_POST,true);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+
+        $results = curl_exec($ch);
+        $results = json_decode($results,true);
+        // dd($results);
+        curl_close($ch);
+    }
+
+    public function delete($id){
+        $this->postID= $id;
+        $ch=curl_init();
+        $url = 'http://192.168.0.4:8081/api/post/delete/'.$this->postID;
+        
+        curl_setopt($ch,CURLOPT_URL,$url);
+        curl_setopt($ch,CURLOPT_POST,true);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+
+        $results = curl_exec($ch);
+        $results = json_decode($results,true);
         // $result = $results['status'];
         // if($result=="201"){
         //     $this->status=true;
         //     return redirect()->route('login');
         // }
         curl_close($ch);
-        $this->clearField();
     }
    
     public function render()
     {
         //view category
         $ch=curl_init();
-        $url = 'http://192.168.0.3:8081/api/category/index';
+        $url = 'http://192.168.0.4:8081/api/category/index';
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
         $results = curl_exec($ch);
@@ -97,7 +130,7 @@ class LiveAdminFeed extends Component
 
         //view posts
         $ch=curl_init();
-        $url = 'http://192.168.0.3:8081/api/post/index';
+        $url = 'http://192.168.0.4:8081/api/post/index';
         
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
@@ -109,9 +142,11 @@ class LiveAdminFeed extends Component
             $dataPost = array();
         }elseif($result =='200'){
             $dataPost = $results['data'];
+            // dd($dataPost);
         }
         curl_close($ch);
 
+        
         return view('livewire.live-admin-feed',compact('data','dataPost'));
     }
 }

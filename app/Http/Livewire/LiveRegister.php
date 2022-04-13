@@ -32,7 +32,7 @@ class LiveRegister extends Component
         $this->validate();
 
         $ch=curl_init();
-        $url = 'http://192.168.0.3:8081/api/register';
+        $url = 'http://192.168.0.4:8081/api/register';
         
         $data=array(
             'firstname'=>$this->firstname,
