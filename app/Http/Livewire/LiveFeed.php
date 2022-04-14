@@ -72,7 +72,7 @@ class LiveFeed extends Component
     {
          //view posts
         // $ch=curl_init();
-        // $url = 'http://192.168.0.4:8081/api/post/index';
+        // $url = 'http://192.168.0.12:8081/api/post/index';
         
         // curl_setopt($ch,CURLOPT_URL,$url);
         // curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);

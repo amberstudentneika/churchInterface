@@ -2,8 +2,11 @@
   {{-- If you look to others for fulfillment, you will never truly be fulfilled. --}}
  
       <!-- component -->
-      {{-- <div class="grid grid-cols-1 gap-6 my-6 px-4 md:px-6 lg:px-8"> --}}
-
+      @if ($test==true)
+      @livewire('edit-post')
+      <button class="bg-blue-400" wire:click="test">CLICK ME</button>
+      {{-- {{$prompt}} --}}
+      @endif
 
         <div class="grid grid-cols-1 gap-6   px-4 md:px-6 lg:px-8">
           <div class="max-w-xl mx-auto px-4 py-4 bg-white w-1/2 shadow-md rounded-lg">
@@ -167,5 +170,9 @@
         
       @endforelse
       
+      
+
+
+
         </div>
-      </div>
+  

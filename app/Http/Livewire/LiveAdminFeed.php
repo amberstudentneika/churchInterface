@@ -7,11 +7,21 @@ use Livewire\WithFileUploads;
 class LiveAdminFeed extends Component
 {
     use WithFileUploads;
-    public $textPost=false;
-    public $postID;
-    public $cat, $heading, $contents, $photo;
+public $prompt;
+protected $listeners=[
+'test'
+];
 
-    
+public function test(){
+    $this->prompt="this is a test";
+    dd($this->prompt);
+}
+
+
+    public $textPost=false;
+    public $postID, $test=true;
+    public $cat, $heading, $contents, $photo;
+   
     public function showMedia(){
         $this->textPost = true;        
     }
@@ -46,7 +56,7 @@ class LiveAdminFeed extends Component
       }
 
         $ch=curl_init();
-        $url = 'http://192.168.0.4:8081/api/post/store';
+        $url = 'http://192.168.0.12:8081/api/post/store';
         
         if($this->photo!='' || $this->photo!=null){
             $photo=$this->photo->getClientOriginalName();
@@ -78,7 +88,7 @@ class LiveAdminFeed extends Component
     public function showEdit($id){
         $this->postID = $id;
         $ch=curl_init();
-        $url = 'http://192.168.0.4:8081/api/post/show/'.$this->postID;
+        $url = 'http://192.168.0.12:8081/api/post/show/'.$this->postID;
         
         //$mID=session()->get('memberID');//should be ADMIN not member
       
@@ -95,7 +105,7 @@ class LiveAdminFeed extends Component
     public function delete($id){
         $this->postID= $id;
         $ch=curl_init();
-        $url = 'http://192.168.0.4:8081/api/post/delete/'.$this->postID;
+        $url = 'http://192.168.0.12:8081/api/post/delete/'.$this->postID;
         
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_POST,true);
@@ -115,7 +125,7 @@ class LiveAdminFeed extends Component
     {
         //view category
         $ch=curl_init();
-        $url = 'http://192.168.0.4:8081/api/category/index';
+        $url = 'http://192.168.0.12:8081/api/category/index';
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
         $results = curl_exec($ch);
@@ -130,7 +140,7 @@ class LiveAdminFeed extends Component
 
         //view posts
         $ch=curl_init();
-        $url = 'http://192.168.0.4:8081/api/post/index';
+        $url = 'http://192.168.0.12:8081/api/post/index';
         
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);

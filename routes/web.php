@@ -19,6 +19,9 @@ Route::get('/feed',[App\Http\Controllers\AdminController::class,'index'])->name(
 Route::get('/category',[App\Http\Controllers\AdminController::class,'category'])->name('adminCategory');
 Route::get('/member/feed',[App\Http\Controllers\MemberController::class,'index'])->name('memberFeed');
 
+
+
+
 // Route::get('/test',function(){
 // return view('layouts.member');
 // });
