@@ -12,5 +12,8 @@ class AdminController extends Controller
     public function category(){
         return view('livewireBlade.liveAdmin.liveCategory');
     }
+    public function announcement(){
+        return view('livewireBlade.liveAdmin.liveAnnouncement');
+    }
 
 }

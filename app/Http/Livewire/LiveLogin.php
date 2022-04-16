@@ -22,7 +22,7 @@ class LiveLogin extends Component
         $this->validate();
 
         $ch=curl_init();
-        $url = 'http://192.168.0.12:8081/api/login';
+        $url = 'http://192.168.0.4:8081/api/login';
         
         $data=array(
             'email'=>$this->email,
@@ -38,8 +38,15 @@ class LiveLogin extends Component
         $results = json_decode($results,true);
         $result = $results['status'];
         if($result=="200"){
-           session()->put('memberID',$results['memberID']);
-           return redirect()->route('memberFeed');
+            if($results['role']== 0){
+                session()->put('memberID',$results['memberID']);
+                return redirect()->route('memberFeed');
+            }
+            elseif($results['role']== 1){
+                session()->put('memberID',$results['memberID']);
+                return redirect()->route('adminFeed');
+            }
+           
         }
         elseif($result=="404"){
            session()->flash('failed',$results['message']);

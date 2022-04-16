@@ -55,7 +55,7 @@
       <div class="w-full h-screen antialiased flex flex-col hover:cursor-pointer">
         <a class="hover:bg-gray-300 bg-gray-200 border-t-2 p-3 w-full text-xl text-left text-gray-600 font-semibold" href="{{route('adminCategory')}}"><i class="fa fa-comment text-gray-600 text-2xl pr-1 pt-1 float-right"></i>Category</a>
         <a class="hover:bg-gray-300 bg-gray-200 border-t-2 p-3 w-full text-xl text-left text-gray-600 font-semibold" href="{{route('adminFeed')}}"><i class="fa fa-comment text-gray-600 text-2xl pr-1 pt-1 float-right"></i>Feeds</a>
-        <a class="hover:bg-gray-300 bg-gray-200 border-t-2 p-3 w-full text-xl text-left text-gray-600 font-semibold" href=""><i class="fa fa-comment text-gray-600 text-2xl pr-1 pt-1 float-right"></i>Announcements</a>
+        <a class="hover:bg-gray-300 bg-gray-200 border-t-2 p-3 w-full text-xl text-left text-gray-600 font-semibold" href="{{route('adminAnnouncement')}}"><i class="fa fa-comment text-gray-600 text-2xl pr-1 pt-1 float-right"></i>Announcements</a>
         {{-- <a class="hover:bg-gray-300 bg-gray-200 border-t-2 p-3 w-full text-xl text-left text-gray-600 font-semibold" href=""><i class="fa fa-cog text-gray-600 text-2xl pr-1 pt-1 float-right"></i>Settings</a> --}}
         <a class="hover:bg-gray-300 bg-gray-200 border-t-2 p-3 w-full text-xl text-left text-gray-600 font-semibold" href=""><i class="fa fa-arrow-left text-gray-600 text-2xl pr-1 pt-1 float-right"></i>Log out</a>
       </div>
