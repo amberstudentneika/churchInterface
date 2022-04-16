@@ -3,13 +3,13 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-
+use Livewire\WithFileUploads;
 class LiveAnnouncement extends Component
 {
     public $heading, $contents, $photo, $oldPhoto;
     public $textPost=false;
     
-    
+    use WithFileUploads;
     public function showMedia(){
         $this->textPost = true;        
     }
@@ -51,6 +51,7 @@ class LiveAnnouncement extends Component
           }elseif($this->photo=='' || $this->photo==null){
               $photo=$this->photo;
           }
+
           $memberID = session()->get('memberID');
           $data=array(
               'memberID'=>$memberID,
@@ -66,7 +67,7 @@ class LiveAnnouncement extends Component
           curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
   
           $results = curl_exec($ch);
-          dd($results);
+        //   dd($results);
           $results = json_decode($results,true);
   
           curl_close($ch);
@@ -74,6 +75,24 @@ class LiveAnnouncement extends Component
     }
     public function render()
     {
-        return view('livewire.live-announcement');
+         //view Announcements
+         $ch=curl_init();
+         $url = 'http://192.168.0.4:8081/api/announcement/index';
+         
+         curl_setopt($ch,CURLOPT_URL,$url);
+         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+ 
+         $results = curl_exec($ch);
+         $results = json_decode($results,true);
+        //  dd($results );
+         $result= $results['status'];
+         if($result =='404'){
+             $dataAnnounce = array();
+         }elseif($result =='200'){
+             $dataAnnounce = $results['data'];
+             // dd($dataComment);
+         }
+         curl_close($ch);
+        return view('livewire.live-announcement',compact('dataAnnounce'));
     }
 }
