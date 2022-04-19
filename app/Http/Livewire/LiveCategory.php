@@ -32,7 +32,7 @@ class LiveCategory extends Component
     public function goSubmit(){
         $this->validate();
         $ch=curl_init();
-        $url = 'http://192.168.0.4:8081/api/category/store';
+        $url = 'http://192.168.0.2:8081/api/category/store';
         
         $data=array(
             'heading'=>$this->heading,
@@ -57,17 +57,21 @@ class LiveCategory extends Component
     }
 
     public function edit($id){
+        
+        // dd($id);
         $this->id=$id;
         $this->viewMode=true;
         $this->addMode=false;
         $this->editMode=true;
         
         $ch=curl_init();
-        $url = 'http://192.168.0.4:8081/api/category/show/'.$id;
+        $url = 'http://192.168.0.2:8081/api/category/show/'.$id;
 
         curl_setopt($ch,CURLOPT_URL,$url);
+        curl_setopt($ch,CURLOPT_POST,true);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
         $results = curl_exec($ch);
+        // dd($results);
         $results = json_decode($results,true);
         
         $data=$results['data'];
@@ -75,10 +79,11 @@ class LiveCategory extends Component
         $this->heading=$data['name'];
         $this->detail=$data['desc'];
     }
+
     public function update(){
         $this->validate();
         $ch=curl_init();
-        $url = 'http://192.168.0.4:8081/api/category/update/'.$this->catID;
+        $url = 'http://192.168.0.2:8081/api/category/update/'.$this->catID;
         
         $data=array(
             'heading'=>$this->heading,
@@ -91,26 +96,29 @@ class LiveCategory extends Component
 
         $results = curl_exec($ch);
         $results = json_decode($results,true);
+        if($results['status']==204){
+            session()->flash('success',$results['message']);
+        }
         $this->viewMode();
     }
 
     public function delete($id){
         $ch=curl_init();
-        $url = 'http://192.168.0.4:8081/api/category/delete/'.$id;
+        $url = 'http://192.168.0.2:8081/api/category/delete/'.$id;
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_POST,true);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
         $results = curl_exec($ch);
         $results = json_decode($results,true);
         if($results['status']==204){
-            session()->flash('deleted',$results['message']);
+            session()->flash('success',$results['message']);
         }
         $this->viewMode();
     }
     public function render()
     {
         $ch=curl_init();
-        $url = 'http://192.168.0.4:8081/api/category/index';
+        $url = 'http://192.168.0.2:8081/api/category/index';
         
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);

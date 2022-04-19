@@ -3,10 +3,11 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use Livewire\WithFileUploads;
-class LiveAnnouncement extends Component
+
+class LiveMemberAnnouncement extends Component
 {
-    use WithFileUploads;
+    
+   
     public $viewModal=false, $announceID;
     public $heading, $contents, $photo, $oldPhoto;
     public $textPost=false;
@@ -170,6 +171,6 @@ public function showEdit($id){
              $dataAnnounce = $results['data'];
          }
          curl_close($ch);
-        return view('livewire.live-announcement',compact('dataAnnounce'));
+        return view('livewire.live-member-announcement',compact('dataAnnounce'));
     }
 }

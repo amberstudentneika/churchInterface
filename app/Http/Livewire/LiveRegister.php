@@ -32,7 +32,7 @@ class LiveRegister extends Component
         $this->validate();
 
         $ch=curl_init();
-        $url = 'http://192.168.0.4:8081/api/register';
+        $url = 'http://192.168.0.2:8081/api/register';
         
         $data=array(
             'firstname'=>$this->firstname,
@@ -52,7 +52,7 @@ class LiveRegister extends Component
         $result = $results['status'];
         if($result=="201"){
            session()->flash('success',$results['message']);
-           return redirect()->route('home');
+           return redirect()->route('login');
         }
         curl_close($ch);
         $this->clearfield();

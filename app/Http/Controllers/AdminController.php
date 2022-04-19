@@ -9,6 +9,9 @@ class AdminController extends Controller
     public function index(){
         return view('livewireBlade.liveAdmin.liveFeed');
     }
+    public function editProfPhotoAdmin(){
+        return view('livewireBlade.liveAdmin.liveProfilePhoto');
+    }
     public function category(){
         return view('livewireBlade.liveAdmin.liveCategory');
     }

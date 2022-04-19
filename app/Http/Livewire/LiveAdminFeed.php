@@ -77,7 +77,7 @@ class LiveAdminFeed extends Component
       }
 
         $ch=curl_init();
-        $url = 'http://192.168.0.4:8081/api/post/store';
+        $url = 'http://192.168.0.2:8081/api/post/store';
         
         if($this->photo!='' || $this->photo!=null){
             $photo=$this->photo->getClientOriginalName();
@@ -85,13 +85,15 @@ class LiveAdminFeed extends Component
         }elseif($this->photo=='' || $this->photo==null){
             $photo=$this->photo;
         }
-        
+        $mID=session()->get('memberID');
         $data=array(
             'categoryID'=>$this->cat,
             'heading'=>$this->heading,
             'contents'=>$this->contents,
             'photo'=>$photo,
+            'mID'=>$mID,
         );
+        // dd($data);
         http_build_query($data);
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_POST,true);
@@ -110,7 +112,7 @@ class LiveAdminFeed extends Component
         $this->viewModal=true;
         $this->postID = $id;
         $ch=curl_init();
-        $url = 'http://192.168.0.4:8081/api/post/show/'.$this->postID;
+        $url = 'http://192.168.0.2:8081/api/post/show/'.$this->postID;
         
         //$mID=session()->get('memberID');//should be ADMIN not member
       
@@ -121,6 +123,7 @@ class LiveAdminFeed extends Component
         $results = curl_exec($ch);
         $results = json_decode($results,true);
         $data=$results['data'][0];
+        // dd($data);
         $categoryName=$results['category']['name'];
 
         $this->editPostID=$data['id'];
@@ -131,9 +134,6 @@ class LiveAdminFeed extends Component
         $this->editPhoto=$data['image'];
         $this->oldPhoto=$data['image'];
         $this->categoryListing=array_slice($results,3,1);
-
-        
-
         curl_close($ch);
     }
 
@@ -143,7 +143,7 @@ class LiveAdminFeed extends Component
         }
 
         $ch=curl_init();
-        $url = 'http://192.168.0.4:8081/api/post/update/'.$this->editPostID;
+        $url = 'http://192.168.0.2:8081/api/post/update/'.$this->editPostID;
         
         if($this->oldPhoto == $this->editPhoto){
             $editPhoto = $this->oldPhoto;
@@ -167,15 +167,17 @@ class LiveAdminFeed extends Component
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
 
         $results = curl_exec($ch);
+        // dd($results);
         $results = json_decode($results,true);
         curl_close($ch);
         $this->clearField();
+        $this->hideModal();
     }
 
     public function delete($id){
         $this->postID= $id;
         $ch=curl_init();
-        $url = 'http://192.168.0.4:8081/api/post/delete/'.$this->postID;
+        $url = 'http://192.168.0.2:8081/api/post/delete/'.$this->postID;
         
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_POST,true);
@@ -191,7 +193,7 @@ class LiveAdminFeed extends Component
 
     public function like($postID){
         $ch=curl_init();
-        $url = 'http://192.168.0.4:8081/api/like/store';
+        $url = 'http://192.168.0.2:8081/api/like/store';
         
         $memberID=session()->get('memberID');
         $data=array(
@@ -215,7 +217,7 @@ class LiveAdminFeed extends Component
 
         public function submitComment($postID){
             $ch=curl_init();
-            $url = 'http://192.168.0.4:8081/api/comment/store';
+            $url = 'http://192.168.0.2:8081/api/comment/store';
             
             $memberID=session()->get('memberID');
             $data=array(
@@ -223,7 +225,6 @@ class LiveAdminFeed extends Component
                 'memberID'=>$memberID,
                 'comment'=>$this->comment,
             );
-            // dd($data);
             http_build_query($data);
             curl_setopt($ch,CURLOPT_URL,$url);
             curl_setopt($ch,CURLOPT_POST,true);
@@ -253,7 +254,7 @@ class LiveAdminFeed extends Component
     {
         //view category
         $ch=curl_init();
-        $url = 'http://192.168.0.4:8081/api/category/index';
+        $url = 'http://192.168.0.2:8081/api/category/index';
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
         $results = curl_exec($ch);
@@ -268,7 +269,7 @@ class LiveAdminFeed extends Component
 
         //view posts
         $ch=curl_init();
-        $url = 'http://192.168.0.4:8081/api/post/index';
+        $url = 'http://192.168.0.2:8081/api/post/index';
         
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);

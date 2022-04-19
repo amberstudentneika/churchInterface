@@ -4,6 +4,6 @@
 @endsection
 @section('content')
   <div>
-    <livewire:live-member-feed/>
+    <livewire:live-member-category/>
   </div>
 @endsection

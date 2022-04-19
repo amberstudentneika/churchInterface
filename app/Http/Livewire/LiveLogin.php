@@ -22,7 +22,7 @@ class LiveLogin extends Component
         $this->validate();
 
         $ch=curl_init();
-        $url = 'http://192.168.0.4:8081/api/login';
+        $url = 'http://192.168.0.2:8081/api/login';
         
         $data=array(
             'email'=>$this->email,
@@ -35,22 +35,29 @@ class LiveLogin extends Component
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
 
         $results = curl_exec($ch);
+        // dd($results);
         $results = json_decode($results,true);
         $result = $results['status'];
         if($result=="200"){
             if($results['role']== 0){
+                session()->put('role',$results['role']);
                 session()->put('memberID',$results['memberID']);
+                session()->put('memberName',$results['memberName']);
+                session()->put('memberImage',$results['memberImage']);
                 return redirect()->route('memberFeed');
             }
             elseif($results['role']== 1){
+                session()->put('role',$results['role']);
                 session()->put('memberID',$results['memberID']);
+                session()->put('memberName',$results['memberName']);
+                session()->put('memberImage',$results['memberImage']);
                 return redirect()->route('adminFeed');
             }
            
         }
         elseif($result=="404"){
            session()->flash('failed',$results['message']);
-           return redirect()->route('home');
+           return redirect()->route('login');
         }
         curl_close($ch);
         // $this->clearfield();
