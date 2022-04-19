@@ -23,7 +23,6 @@ class MemberMiddleware
             if($role==0){
                 return $next($request);
             }
-            
         }
         return redirect()->route('login');
     }

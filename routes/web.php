@@ -24,13 +24,13 @@ Route::get('/feed',[App\Http\Controllers\AdminController::class,'index'])->name(
 Route::get('/edit/profile',[App\Http\Controllers\AdminController::class,'editProfPhotoAdmin'])->name('editProfilePhotoAdmin');
 });
 
-Route::group(["middleware" => ["member"]], function(){
+// Route::group(["middleware" => ["member"]], function(){
     
     Route::get('/member/feed',[App\Http\Controllers\MemberController::class,'index'])->name('memberFeed');
     Route::get('/member/announcement',[App\Http\Controllers\MemberController::class,'announcement'])->name('memberAnnouncement');
     Route::get('/member/category',[App\Http\Controllers\MemberController::class,'category'])->name('memberCategory');
     Route::get('/member/edit/profile',[App\Http\Controllers\MemberController::class,'editProfile'])->name('memberEditProfile');
-});
+// });
 
 Route::get('/logout',[App\Http\Controllers\MemberController::class,'logout'])->name('logout');
 

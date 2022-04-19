@@ -77,7 +77,7 @@ class LiveAdminFeed extends Component
       }
 
         $ch=curl_init();
-        $url = 'http://192.168.0.2:8081/api/post/store';
+        $url = 'http://192.168.0.12:8081/api/post/store';
         
         if($this->photo!='' || $this->photo!=null){
             $photo=$this->photo->getClientOriginalName();
@@ -112,7 +112,7 @@ class LiveAdminFeed extends Component
         $this->viewModal=true;
         $this->postID = $id;
         $ch=curl_init();
-        $url = 'http://192.168.0.2:8081/api/post/show/'.$this->postID;
+        $url = 'http://192.168.0.12:8081/api/post/show/'.$this->postID;
         
         //$mID=session()->get('memberID');//should be ADMIN not member
       
@@ -143,7 +143,7 @@ class LiveAdminFeed extends Component
         }
 
         $ch=curl_init();
-        $url = 'http://192.168.0.2:8081/api/post/update/'.$this->editPostID;
+        $url = 'http://192.168.0.12:8081/api/post/update/'.$this->editPostID;
         
         if($this->oldPhoto == $this->editPhoto){
             $editPhoto = $this->oldPhoto;
@@ -177,7 +177,7 @@ class LiveAdminFeed extends Component
     public function delete($id){
         $this->postID= $id;
         $ch=curl_init();
-        $url = 'http://192.168.0.2:8081/api/post/delete/'.$this->postID;
+        $url = 'http://192.168.0.12:8081/api/post/delete/'.$this->postID;
         
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_POST,true);
@@ -193,7 +193,7 @@ class LiveAdminFeed extends Component
 
     public function like($postID){
         $ch=curl_init();
-        $url = 'http://192.168.0.2:8081/api/like/store';
+        $url = 'http://192.168.0.12:8081/api/like/store';
         
         $memberID=session()->get('memberID');
         $data=array(
@@ -217,7 +217,7 @@ class LiveAdminFeed extends Component
 
         public function submitComment($postID){
             $ch=curl_init();
-            $url = 'http://192.168.0.2:8081/api/comment/store';
+            $url = 'http://192.168.0.12:8081/api/comment/store';
             
             $memberID=session()->get('memberID');
             $data=array(
@@ -254,7 +254,7 @@ class LiveAdminFeed extends Component
     {
         //view category
         $ch=curl_init();
-        $url = 'http://192.168.0.2:8081/api/category/index';
+        $url = 'http://192.168.0.12:8081/api/category/index';
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
         $results = curl_exec($ch);
@@ -264,12 +264,14 @@ class LiveAdminFeed extends Component
             $data= array();
         }elseif($result =='200'){
             $data = $results['data'];
+        }if($result == null){
+            $data = array();
         }
         curl_close($ch);
 
         //view posts
         $ch=curl_init();
-        $url = 'http://192.168.0.2:8081/api/post/index';
+        $url = 'http://192.168.0.12:8081/api/post/index';
         
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
@@ -285,6 +287,9 @@ class LiveAdminFeed extends Component
             $dataPost = $results['data'];
             $dataComment = $results['commentData'];
             // dd($dataComment);
+        }if($result == null){
+            $dataPost = array();
+            $dataComment = array();  
         }
         curl_close($ch);
 

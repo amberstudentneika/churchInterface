@@ -25,7 +25,7 @@ class LiveMemberFeed extends Component
 
     public function like($postID){
         $ch=curl_init();
-        $url = 'http://192.168.0.2:8081/api/like/store';
+        $url = 'http://192.168.0.12:8081/api/like/store';
         
         $memberID=session()->get('memberID');
         $data=array(
@@ -49,7 +49,7 @@ class LiveMemberFeed extends Component
 
         public function submitComment($postID){
             $ch=curl_init();
-            $url = 'http://192.168.0.2:8081/api/comment/store';
+            $url = 'http://192.168.0.12:8081/api/comment/store';
             
             $memberID=session()->get('memberID');
             $data=array(
@@ -75,7 +75,7 @@ class LiveMemberFeed extends Component
     {
         //view posts
         $ch=curl_init();
-        $url = 'http://192.168.0.2:8081/api/post/index';
+        $url = 'http://192.168.0.12:8081/api/post/index';
         
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
@@ -97,6 +97,12 @@ class LiveMemberFeed extends Component
             $dataMembers = $results['membersData'];
             $dataAnnouncement = $results['announcementData'];
             // dd($dataPost);
+        }if($result == null){
+            $dataPost = array();
+            $dataComment = array();
+            $dataCategory = array();
+            $dataMembers = array();
+            $dataAnnouncement = array();
         }
         curl_close($ch);
 
