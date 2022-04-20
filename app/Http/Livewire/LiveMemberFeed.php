@@ -7,8 +7,17 @@ use Livewire\Component;
 class LiveMemberFeed extends Component
 {
     //Comment Variable
-    public $comment, $showComments=false, $showCom, $hideCom;
-
+    public $comID, $comment, $showComments=false, $showCom, $hideCom;
+    public $editCommentInput=false;
+  
+    public function showEditCommentInput(){
+        $this->editCommentInput=true;
+    }
+    public function hideEditCommentInput(){
+        $this->editCommentInput=false;
+        $this->clearField();
+    }
+    
     public function clearField(){
         $this->comment='';
     }
@@ -70,7 +79,65 @@ class LiveMemberFeed extends Component
             $this->clearField();
         }
 
+        public function deleteComment($commentID,$postID){
+            $ch=curl_init();
+            $url = 'http://192.168.0.2:8081/api/comment/delete/'.$commentID;
+            
+            $memberID=session()->get('memberID');
+            $data=array(
+                'postID'=>$postID,
+                'memberID'=>$memberID,
+            );
+            http_build_query($data);
+            curl_setopt($ch,CURLOPT_URL,$url);
+            curl_setopt($ch,CURLOPT_POST,true);
+            curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
+            curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+    
+            $results = curl_exec($ch);
+            $results = json_decode($results,true);
+            curl_close($ch);
+        }
 
+        public function showEditComment($commentID){
+            $ch=curl_init();
+            $url = 'http://192.168.0.2:8081/api/comment/show/'.$commentID;
+            
+         
+            curl_setopt($ch,CURLOPT_URL,$url);
+            curl_setopt($ch,CURLOPT_POST,true);
+            curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+    
+            $results = curl_exec($ch);
+            $results = json_decode($results,true);
+            $result=$results['data'];
+            // dd($result);
+            $this->comment = $result['body'];
+            $this->comID = $result['id'];
+            $this->showEditCommentInput();
+            curl_close($ch);
+        }
+        public function editComment(){
+            $this->hideEditCommentInput();
+            $ch=curl_init();
+            $url = 'http://192.168.0.2:8081/api/comment/update/'.$this->comID;
+            
+            $memberID=session()->get('memberID');
+            $data=array(
+                'comment'=>$this->comment,
+                'memberID'=>$memberID,
+            );
+            
+            http_build_query($data);
+            curl_setopt($ch,CURLOPT_URL,$url);
+            curl_setopt($ch,CURLOPT_POST,true);
+            curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
+            curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+    
+            $results = curl_exec($ch);
+            $results = json_decode($results,true);
+            curl_close($ch);
+        }
     public function render()
     {
         //view posts

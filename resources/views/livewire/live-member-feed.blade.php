@@ -65,13 +65,23 @@
                   <div class="mt-2">
                     <div class="flex justify-center">
                     <input wire:model="comment" type="text" placeholder="Make a comment.." class="w-2/4 px-2 py-1 mr-2 border border-gray-200 rounded-sm"/>
+                    @if($editCommentInput == false)
                     <button wire:click="submitComment({{$post['id']}})" type="submit" class="px-2 py-2 bg-green-500 rounded-sm focus:outline-none focus:shadow-outline">Post</button>
-                   
+                    @elseif($editCommentInput == true)
+                    <button wire:click="editComment()" type="submit" class="px-2 py-2 bg-green-500 rounded-sm focus:outline-none focus:shadow-outline">Edit</button>
+                    @endif
+
                     @if($showComments==false)
                     <button wire:click="showComment({{$post['id']}})" type="button" class="px-2 py-2 ml-1 bg-blue-500 rounded-sm focus:outline-none focus:shadow-outline">See Comment(s)</button>
                     @elseif($showComments==true)
                         @if($showCom==$post['id'])
-                            <button wire:click="hideComment({{$post['id']}})" type="submit" class="px-2 py-2 ml-1 bg-red-500 rounded-sm focus:outline-none focus:shadow-outline">Hide Comment(s)</button>
+                            {{-- if statement to display edit button or hide comment --}}
+                              @if($editCommentInput == false)
+                              <button wire:click="hideComment({{$post['id']}})" type="submit" class="px-2 py-2 ml-1 bg-red-500 rounded-sm focus:outline-none focus:shadow-outline">Hide Comment(s)</button>
+                              @elseif($editCommentInput == true)
+                              <button wire:click="hideEditCommentInput()" type="submit" class="px-2 py-2 ml-1 bg-red-500 rounded-sm focus:outline-none focus:shadow-outline">Cancel</button>
+                              @endif
+                            {{-- end of the disp edit btn / hide btn   --}}
                         @elseif($showCom!=$post['id'])
                             <button wire:click="showComment({{$post['id']}})" type="button" class="px-2 py-2 ml-1 bg-blue-500 rounded-sm focus:outline-none focus:shadow-outline">See Comment(s)</button>
                         @endif
@@ -90,18 +100,25 @@
                                 @forelse($dataComment as $comment)
                                   @if($comment['postID']==$showCom)
                                   
+                                  <div>
+                                    <img class="w-8 h-8 mt-1 mr-2 rounded-full " src="{{url('storage/profileImage/storage/'.$comment['member']['image'])}}"/>
+                                  </div>
                                       <div class="flex items-stretch">
-                                      <div>
-                                        <img class="w-8 h-8 mt-1 mr-2 rounded-full " src="{{url('storage/profileImage/storage/'.$comment['member']['image'])}}"/>
-                                      </div>
                                       <div class="bg-gray-100 dark:bg-gray-700 rounded-3xl px-4 pt-2 pb-2.5">
                                         <div class="text-sm font-semibold leading-relaxed">{{$comment['member']['name']}}</div>
                                         {{$comment['body']}}
+                                        <?php $memberID = session()->get('memberID') ?>
+                                        @if($comment['memberID']== $memberID)
+                                        <div class="text-sm font-semibold leading-relaxed">
+                                          <button  wire:click="showEditComment({{$comment['id']}})" class="text-blue-500">edit</button>
+                                          <button wire:click="deleteComment({{$comment['id']}},'{{$comment['postID']}}')" class="text-red-500">delete</button>
+                                        @endif
+                                        </div>
                                       </div>
-                                      </div>
-
+                                      
+                                    </div>
                                       <div class="text-sm ml-4 mt-0.5 text-gray-500 dark:text-gray-400">
-                                        {{\Carbon\Carbon::parse($comment['created_at'])->diffForHumans()}}
+                                        {{\Carbon\Carbon::parse($comment['updated_at'])->diffForHumans()}}
                                       </div>
 
                                   @endif
