@@ -22,7 +22,7 @@ class LiveRegister extends Component
         'lastname' => 'required',
         'gender' => 'required',
         'email' => 'required|email',
-        'password' => 'min:8|same:password_confirmation',
+        'password' => 'min:8|required',
         'password_confirmation' => 'min:8|same:password',
     ];
     public function updated($propertyName){
@@ -32,7 +32,7 @@ class LiveRegister extends Component
         $this->validate();
 
         $ch=curl_init();
-        $url = 'http://192.168.0.12:8081/api/register';
+        $url = 'http://192.168.0.2:8081/api/register';
         
         $data=array(
             'firstname'=>$this->firstname,

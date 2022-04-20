@@ -16,9 +16,10 @@
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     @livewireStyles()
 </head>
-<body class="bg-gray-100 h-screen antialiased leading-none font-sans">
+
+<body class="bg-gray-200 h-screen antialiased leading-none font-sans">
     <div id="app">
-        <header class="bg-green-900 py-6">
+        {{-- <header class="bg-blue-900 py-6">
             <div class="container mx-auto flex justify-center px-6">
                 <div>
                     <a href="{{ url('/') }}" class="font-extrabold text-2xl text-gray-100 no-underline">
@@ -27,10 +28,10 @@
                 </div>
              
             </div>
-        </header>
+        </header> --}}
 
         @yield('content')
-        @livewireScripts
+    @livewireScripts
     </div>
 </body>
 </html>

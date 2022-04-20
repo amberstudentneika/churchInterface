@@ -22,7 +22,7 @@ class LiveLogin extends Component
         $this->validate();
 
         $ch=curl_init();
-        $url = 'http://192.168.0.12:8081/api/login';
+        $url = 'http://192.168.0.2:8081/api/login';
         
         $data=array(
             'email'=>$this->email,
@@ -34,10 +34,10 @@ class LiveLogin extends Component
         curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
 
-        $results = curl_exec($ch);
-        // dd($results);
+        $results = curl_exec($ch); 
         $results = json_decode($results,true);
         $result = $results['status'];
+        // dd($result);
         if($result=="200"){
             if($results['role']== 0){
                 session()->put('role',$results['role']);
@@ -53,11 +53,12 @@ class LiveLogin extends Component
                 session()->put('memberImage',$results['memberImage']);
                 return redirect()->route('adminFeed');
             }
-           
         }
-        elseif($result=="404"){
+        elseif($result =="404"){
            session()->flash('failed',$results['message']);
            return redirect()->route('login');
+        }if($result == null){
+            return redirect()->route('errorAlert');
         }
         curl_close($ch);
         // $this->clearfield();

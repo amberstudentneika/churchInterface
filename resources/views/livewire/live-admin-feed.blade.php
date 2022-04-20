@@ -249,17 +249,26 @@
                 @if($showCom==$post['id'])
                   <div class="mt-2">
                       @if($showCom!=null)
-                      <div class="flex max-w-lg p-4 antialiased text-black bg-white dark:bg-gray-800 dark:text-gray-200">
+                      <div class=" max-w-lg p-4 antialiased text-black bg-white dark:bg-gray-800 dark:text-gray-200">
                             <!-- comment component -->
                             <div>
                               @forelse($dataComment as $comment)
                                 @if($comment['postID']==$showCom)
-                                    <div><img class="w-8 h-8 mt-1 mr-2 rounded-full " src="{{url('storage/profileImage/storage/'.$comment['member']['image'])}}"/></div>
-                                    <div class="bg-gray-100 dark:bg-gray-700 rounded-3xl px-4 pt-2 pb-2.5">
+                                 
+                                  <div class="flex items-stretch">
+                                    <div>
+                                      <img class="w-8 h-8 mt-1 mr-2 rounded-full " src="{{url('storage/profileImage/storage/'.$comment['member']['image'])}}"/>
+                                    </div>
+                                    <div class="self-auto bg-gray-100 dark:bg-gray-700 rounded-3xl px-4 pt-2 pb-2.5">
                                       <div class="text-sm font-semibold leading-relaxed">{{$comment['member']['name']}}</div>
                                       {{$comment['body']}}
                                     </div>
-                                    <div class="text-sm ml-4 mt-0.5 text-gray-500 dark:text-gray-400">{{\Carbon\Carbon::parse($comment['created_at'])->diffForHumans()}}</div>
+                                  </div>
+
+                                    <div class="text-sm ml-12 mt-0.5 mb-4 text-gray-500 dark:text-gray-400">
+                                      {{\Carbon\Carbon::parse($comment['created_at'])->diffForHumans()}}
+                                    </div>
+
                                 @endif
                               @empty
                               @endforelse

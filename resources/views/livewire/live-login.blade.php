@@ -20,7 +20,7 @@
               <div class="hidden lg:block lg:w-1/2 bg-cover" style="background-image:url('backgroundImage/bible-2110439_1920.jpg')"></div>
               {{-- <div class="hidden lg:block lg:w-1/2 bg-cover" style="background-image:url('https://images.unsplash.com/photo-1546514714-df0ccc50d7bf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=667&q=80')"></div> --}}
               <div class="w-full p-8 lg:w-1/2">
-                  <h2 class="text-2xl font-semibold text-gray-700 text-center">Welcome back!</h2>
+                  <h2 class="text-2xl font-bold text-gray-700 text-center mb-8">Lewis Ministry of God</h2>
                   {{-- <p class="text-xl text-gray-600 text-center">Welcome back!</p> --}}
                  <form wire:submit.prevent="onSubmit">
                   <div class="mt-4">
@@ -35,7 +35,7 @@
                       <input wire:model="password" class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="password">
                   </div>
                   <div class="mt-8">
-                      <button type="submit" class="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">Login</button>
+                      <button type="submit" class="bg-green-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-green-600">Login</button>
                   </div>
                   <div class="mt-4 flex items-center justify-between">
                       <span class="border-b w-1/5 md:w-1/4"></span>

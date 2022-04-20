@@ -21,7 +21,7 @@ class LiveProfilePhoto extends Component
         $photo=$this->photo->getClientOriginalName();
         $this->photo->storePubliclyAs('storage',$photo,'profileImage');
         
-        $url = 'http://192.168.0.12:8081/api/upload/profileimage/store';
+        $url = 'http://192.168.0.2:8081/api/upload/profileimage/store';
         $memberID = session()->get('memberID');
         $data=array(
             'memberID'=>$memberID,

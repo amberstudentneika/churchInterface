@@ -52,7 +52,7 @@ class LiveAnnouncement extends Component
         }
   
           $ch=curl_init();
-          $url = 'http://192.168.0.12:8081/api/announcement/store';
+          $url = 'http://192.168.0.2:8081/api/announcement/store';
 
           if($this->photo!='' || $this->photo!=null){
               $photo=$this->photo->getClientOriginalName();
@@ -87,7 +87,7 @@ public function showEdit($id){
     $this->viewModal=true;
     $this->announceID = $id;
     $ch=curl_init();
-    $url = 'http://192.168.0.12:8081/api/announcement/show/'.$this->announceID;
+    $url = 'http://192.168.0.2:8081/api/announcement/show/'.$this->announceID;
     
     //$mID=session()->get('memberID');//should be ADMIN not member
   
@@ -110,7 +110,7 @@ public function showEdit($id){
 
     public function edit(){
         $ch=curl_init();
-        $url = 'http://192.168.0.12:8081/api/announcement/update/'.$this->announceID;
+        $url = 'http://192.168.0.2:8081/api/announcement/update/'.$this->announceID;
         
         if($this->oldPhoto == $this->photo){
             $photo = $this->oldPhoto;
@@ -141,7 +141,7 @@ public function showEdit($id){
     public function delete($id){
         $this->announceID= $id;
         $ch=curl_init();
-        $url = 'http://192.168.0.12:8081/api/announcement/delete/'.$this->announceID;
+        $url = 'http://192.168.0.2:8081/api/announcement/delete/'.$this->announceID;
         
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_POST,true);
@@ -155,7 +155,7 @@ public function showEdit($id){
     {
          //view Announcements
          $ch=curl_init();
-         $url = 'http://192.168.0.12:8081/api/announcement/index';
+         $url = 'http://192.168.0.2:8081/api/announcement/index';
          
          curl_setopt($ch,CURLOPT_URL,$url);
          curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
