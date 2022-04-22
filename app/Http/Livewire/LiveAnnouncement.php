@@ -8,7 +8,7 @@ class LiveAnnouncement extends Component
 {
     use WithFileUploads;
     public $viewModal=false, $announceID;
-    public $heading, $contents, $photo, $oldPhoto;
+    public $heading, $contents, $photo, $oldPhoto, $editPhoto, $editOldPhoto;
     public $textPost=false;
     
 
@@ -52,7 +52,7 @@ class LiveAnnouncement extends Component
         }
   
           $ch=curl_init();
-          $url = 'http://192.168.0.2:8081/api/announcement/store';
+          $url = 'http://192.168.0.12:8081/api/announcement/store';
 
           if($this->photo!='' || $this->photo!=null){
               $photo=$this->photo->getClientOriginalName();
@@ -87,7 +87,7 @@ public function showEdit($id){
     $this->viewModal=true;
     $this->announceID = $id;
     $ch=curl_init();
-    $url = 'http://192.168.0.2:8081/api/announcement/show/'.$this->announceID;
+    $url = 'http://192.168.0.12:8081/api/announcement/show/'.$this->announceID;
     
     //$mID=session()->get('memberID');//should be ADMIN not member
   
@@ -96,34 +96,35 @@ public function showEdit($id){
     curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
 
     $results = curl_exec($ch);
-    // dd($results);
     $results = json_decode($results,true);
     $data=$results['data'];
+    // dd($data);
     $this->announceID=$data['id'];
     $this->heading=$data['topic'];
     $this->contents=$data['message'];
-    $this->photo=$data['image'];
-    $this->oldPhoto=$data['image'];
+    $this->editPhoto=$data['image'];
+    $this->editOldPhoto=$data['image'];
     // dd($this->photo);
     curl_close($ch);
 }
 
     public function edit(){
         $ch=curl_init();
-        $url = 'http://192.168.0.2:8081/api/announcement/update/'.$this->announceID;
+        $url = 'http://192.168.0.12:8081/api/announcement/update/'.$this->announceID;
         
-        if($this->oldPhoto == $this->photo){
-            $photo = $this->oldPhoto;
-            }elseif($this->oldPhoto != $this->photo){
-                $photo=$this->photo->getClientOriginalName();
-                $this->photo->storePubliclyAs('storage',$photo,'gallery');
+        if($this->editOldPhoto== $this->editPhoto){
+            $editPhoto = $this->editOldPhoto;
+            }elseif($this->editOldPhoto != $this->editPhoto){
+                $editPhoto=$this->editPhoto->getClientOriginalName();
+                $this->editPhoto->storePubliclyAs('storage',$editPhoto,'gallery');
         }
         
         $data=array(
             'heading'=>$this->heading,
             'contents'=>$this->contents,
-            'photo'=>$photo,
+            'photo'=>$editPhoto,
         );
+        // dd($data);
         http_build_query($data);
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_POST,true);
@@ -141,7 +142,7 @@ public function showEdit($id){
     public function delete($id){
         $this->announceID= $id;
         $ch=curl_init();
-        $url = 'http://192.168.0.2:8081/api/announcement/delete/'.$this->announceID;
+        $url = 'http://192.168.0.12:8081/api/announcement/delete/'.$this->announceID;
         
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_POST,true);
@@ -155,7 +156,7 @@ public function showEdit($id){
     {
          //view Announcements
          $ch=curl_init();
-         $url = 'http://192.168.0.2:8081/api/announcement/index';
+         $url = 'http://192.168.0.12:8081/api/announcement/index';
          
          curl_setopt($ch,CURLOPT_URL,$url);
          curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);

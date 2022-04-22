@@ -16,7 +16,7 @@
                 <div class="flex justify-center">
                   <div class="py-2">
                     <?php $count=0;?>
-                   <select wire:model="cat" class="@error('cat')  border-red-500 @enderror  resize-none rounded-sm bg-gray-100  border border-gray-300 outline-none">
+                   <select wire:model="cat" class="@error('cat')  border-red-500 @enderror py-2 px-4 text-gray-500 resize-none rounded-sm bg-gray-100   border border-gray-300 outline-none">
                    <option value="">Select a category</option>
                    @forelse ( $data as $info )
                    {{$count=$count+1}}
@@ -32,9 +32,9 @@
                    @enderror 
                   </div>
                </div>
-                <div class="flex justify-center">
+                <div class="">
                   <div class="py-2">
-                   <input wire:model="heading" placeholder="Title" class="@error('heading')  border-red-500 @enderror  resize-none rounded-sm bg-gray-100  border border-gray-300 outline-none"/>
+                   <input wire:model="heading" placeholder="Title" class="@error('heading')  border-red-500 @enderror   py-2 px-4 w-full  mt-5 resize-none rounded-sm bg-gray-100  border border-gray-300 outline-none"/>
                    @error('heading')
                    <p class="mt-4 text-xs italic text-red-500">
                        {{ $message }}
@@ -42,9 +42,9 @@
                    @enderror 
                   </div>
                </div>
-                <div class="flex justify-center">
+                <div class="">
                   <div class="py-2">
-                   <textarea wire:model="contents" placeholder="What's on your mind?" class="@error('contents')  border-red-500 @enderror  resize-none rounded-sm bg-gray-100 p-3 h-20 border border-gray-300 outline-none"></textarea>
+                   <textarea wire:model="contents" placeholder="What's on your mind?" class="@error('contents')  border-red-500 @enderror w-full resize-none rounded-sm bg-gray-100 p-3 h-36 w-full border border-gray-300 outline-none"></textarea>
                    @error('contents')
                    <p class="mt-4 text-xs italic text-red-500">
                        {{ $message }}
@@ -198,8 +198,9 @@
             </div>
             <div class="flex flex-row items-center justify-between py-2">
               <div class="flex flex-row items-center">
+              
                 <a href="#" class="flex flex-row items-center rounded-lg focus:outline-none focus:shadow-outline">
-                  <img class="object-cover w-8 h-8 rounded-full" src="{{url('backgroundImage/tempProfileImage.png')}}" alt="">
+                  <img class="object-cover w-8 h-8 rounded-full" src="{{url('storage/profileImage/storage/'.$post['member']['image'])}}" alt="">
                   <p class="ml-2 text-base font-medium">{{$post['member']['name']}}</p>
                 </a>
               </div>
@@ -232,15 +233,24 @@
                 
                 <div class="mt-2">
                   <div class="flex justify-center">
-                  <input wire:model="comment" type="text" placeholder="Make a comment.." class="w-2/4 px-2 py-1 mr-2 border border-gray-200 rounded-sm"/>
-                  <button wire:click="submitComment({{$post['id']}})" type="submit" class="px-2 py-2 bg-green-500 rounded-sm focus:outline-none focus:shadow-outline">Post</button>
-                 
+                  <input wire:model="comment"  type="text" placeholder="Make a comment.." class="w-2/4 px-2 py-1 mr-2 border border-gray-200 rounded-sm"/>
+                    @if($editCommentInput == false)
+                    <button wire:click="submitComment({{$post['id']}})" type="submit" class="px-2 py-2 bg-green-500 rounded-sm focus:outline-none focus:shadow-outline">Post</button>
+                    @elseif($editCommentInput == true)
+                    <button wire:click="editComment()" type="submit" class="px-2 py-2 bg-green-500 rounded-sm focus:outline-none focus:shadow-outline">Edit</button>
+                    @endif
+                    
                   @if($showComments==false)
                   <button wire:click="showComment({{$post['id']}})" type="button" class="px-2 py-2 ml-1 bg-blue-500 rounded-sm focus:outline-none focus:shadow-outline">See Comment(s)</button>
                   @elseif($showComments==true)
                       @if($showCom==$post['id'])
-                          <button wire:click="hideComment({{$post['id']}})" type="submit" class="px-2 py-2 ml-1 bg-red-500 rounded-sm focus:outline-none focus:shadow-outline">Hide Comment(s)</button>
-                      @elseif($showCom!=$post['id'])
+
+                      @if($editCommentInput == false)
+                      <button wire:click="hideComment({{$post['id']}})" type="submit" class="px-2 py-2 ml-1 bg-red-500 rounded-sm focus:outline-none focus:shadow-outline">Hide Comment(s)</button>
+                      @elseif($editCommentInput == true)
+                      <button wire:click="hideEditCommentInput()" type="submit" class="px-2 py-2 ml-1 bg-red-500 rounded-sm focus:outline-none focus:shadow-outline">Cancel</button>
+                      @endif
+                          @elseif($showCom!=$post['id'])
                           <button wire:click="showComment({{$post['id']}})" type="button" class="px-2 py-2 ml-1 bg-blue-500 rounded-sm focus:outline-none focus:shadow-outline">See Comment(s)</button>
                       @endif
                   @endif
@@ -260,8 +270,17 @@
                                       <img class="w-8 h-8 mt-1 mr-2 rounded-full " src="{{url('storage/profileImage/storage/'.$comment['member']['image'])}}"/>
                                     </div>
                                     <div class="self-auto bg-gray-100 dark:bg-gray-700 rounded-3xl px-4 pt-2 pb-2.5">
-                                      <div class="text-sm font-semibold leading-relaxed">{{$comment['member']['name']}}</div>
+                                      <div class="text-sm font-semibold leading-relaxed">
+                                        {{$comment['member']['name']}}
+                                      </div>
                                       {{$comment['body']}}
+                                      <?php $memberID = session()->get('memberID') ?>
+                                      @if($comment['memberID']== $memberID)
+                                      <div>
+                                        <button  wire:click="showEditComment({{$comment['id']}})" class="text-blue-500">edit</button>
+                                        <button wire:click="deleteComment({{$comment['id']}},'{{$comment['postID']}}')" class="text-red-500">delete</button>
+                                      </div>
+                                        @endif
                                     </div>
                                   </div>
 

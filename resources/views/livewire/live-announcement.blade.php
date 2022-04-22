@@ -10,9 +10,9 @@
 
 <form wire:submit.prevent="onSubmit">
   
-    <div class="flex justify-center">
+    <div class=" ">
       <div class="py-2">
-       <input wire:model="heading" placeholder="Title" class="@error('heading')  border-red-500 @enderror  resize-none rounded-sm bg-gray-100  border border-gray-300 outline-none"/>
+       <input wire:model="heading" placeholder="Title" class="@error('heading')  border-red-500 @enderror py-2 px-4 w-full mt-5 resize-none rounded-sm bg-gray-100  border border-gray-300 outline-none"/>
        @error('heading')
        <p class="mt-4 text-xs italic text-red-500">
            {{ $message }}
@@ -20,9 +20,9 @@
        @enderror 
       </div>
    </div>
-    <div class="flex justify-center">
+    <div class=" ">
       <div class="py-2">
-       <textarea wire:model="contents" placeholder="What's on your mind?" class="@error('contents')  border-red-500 @enderror  resize-none rounded-sm bg-gray-100 p-3 h-20 border border-gray-300 outline-none"></textarea>
+       <textarea wire:model="contents" placeholder="What's on your mind?" class="@error('contents')  border-red-500 @enderror  resize-none rounded-sm bg-gray-100 w-full p-3 h-36 border border-gray-300 outline-none"></textarea>
        @error('contents')
        <p class="mt-4 text-xs italic text-red-500">
            {{ $message }}
@@ -105,45 +105,47 @@
                  
                   <label for="" class="text-sm font-bold leading-tight tracking-normal text-gray-800">Content</label>
                   <!-- <div class="relative mt-2 mb-5"> -->
-                      <textarea wire:model="contents" class="flex items-center w-full h-10 pl-3 mb-8 text-sm font-normal text-gray-600 border border-gray-300 rounded resize-none focus:outline-none focus:border focus:border-indigo-700" placeholder="What's on your mind?"></textarea>
+                      <textarea wire:model="contents" class="flex items-center w-full h-36 px-2 py-4 pl-3 mb-8 text-sm font-normal text-gray-600 border border-gray-300 rounded resize-none focus:outline-none focus:border focus:border-indigo-700" placeholder="What's on your mind?"></textarea>
                   <!-- </div> -->
-                  @if($photo=="no image")
-                  <div class="flex justify-center"></label>
+                   
+                  @if($editPhoto != "no image")
+                  <div class="flex justify-center">
                       <div class='flex items-center justify-center w-full'>
                           <label class='flex flex-col w-full h-32 border-4 border-dashed cursor-pointer hover:bg-gray-100 hover:border-gray-200 group'>
                               <div class='flex flex-col items-center justify-center pt-7'>
                                   <svg class="w-10 h-10 text-purple-400 group-hover:text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                  @if($photo == 'no image') 
-                                  <p class='pt-1 text-sm tracking-wider text-gray-400 lowercase group-hover:text-purple-600'>upload either JPG, JPEG, PDF file</p>
-                                  @elseif($photo == $oldPhoto)
-                                  <p class='pt-1 text-sm tracking-wider text-purple-600 lowercase'>{{$photo}}</p>
+                                  
+                                  @if($editPhoto == $editOldPhoto)
+                                  <p class='pt-1 text-sm tracking-wider text-purple-600 lowercase'>{{$editPhoto}}</p>
+                                  @elseif($editPhoto!= $editOldPhoto)
+                                  <p class='pt-1 text-sm tracking-wider text-purple-600 lowercase'>{{$editPhoto->getClientOriginalName()}}</p>
                                   @else
-                                  <p class='pt-1 text-sm tracking-wider text-purple-600 lowercase'>{{$photo->getClientOriginalName()}}</p>
+                                  <p class='pt-1 text-sm tracking-wider text-gray-400 lowercase group-hover:text-purple-600'>upload either JPG, JPEG, PDF file</p>
                                   @endif
                               </div>
-                              <input wire:model="photo" type="file" class="hidden" />
+                              <input wire:model="editPhoto" type="file" class="hidden" />
                           </label>  
                       </div>
                     </div>
-                    @endif
-                  @if($photo!="no image")
-                  <div class="flex justify-center"></label>
+                    @elseif($editPhoto == "no image")
+                  <div class="flex justify-center">
                     {{-- <label class="mb-1 text-xs font-semibold text-blue-700 uppercase md:text-sm text-light"> --}}
                       <div class='flex items-center justify-center w-full'>
                           <label class='flex flex-col w-full h-32 border-4 border-dashed cursor-pointer hover:bg-gray-100 hover:border-gray-200 group'>
                               <div class='flex flex-col items-center justify-center pt-7'>
                                   <svg class="w-10 h-10 text-purple-400 group-hover:text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                  @if($photo == '') 
+                                  @if($editPhoto== '') 
                                   <p class='pt-1 text-sm tracking-wider text-gray-400 lowercase group-hover:text-purple-600'>upload either JPG, JPEG, PDF file</p>
-                                  @elseif($photo == $oldPhoto)
-                                  <p class='pt-1 text-sm tracking-wider text-purple-600 lowercase'>{{$photo}}</p>
-                                  @else
-                                  <p class='pt-1 text-sm tracking-wider text-purple-600 lowercase'>{{$photo->getClientOriginalName()}}</p>
+                                  @elseif($editPhoto == $editOldPhoto)
+                                  <p class='pt-1 text-sm tracking-wider text-purple-600 lowercase'>{{$editPhoto}}</p>
+                                  @elseif($editPhoto != $editOldPhoto)
+                                  <p class='pt-1 text-sm tracking-wider text-purple-600 lowercase'>{{$editPhoto->getClientOriginalName()}}</p>
                                   @endif
                               </div>
-                              <input wire:model="photo" type="file" class="hidden" />
+                              <input wire:model="editPhoto" type="file" class="hidden" />
                           </label>  
                       </div>
+                      
                     </div>
                     @endif
                     @if(session()->has('error'))
@@ -155,7 +157,7 @@
 
 
 
-                  <div class="flex items-center justify-start w-full">
+                  <div class="flex justify-center mt-5 w-full">
                       <button wire:click="edit()" type="submit" class="px-8 py-2 text-sm text-white transition duration-150 ease-in-out bg-indigo-700 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 hover:bg-indigo-600">Finish</button>
                       <button class="px-8 py-2 ml-3 text-sm text-gray-600 transition duration-150 ease-in-out bg-gray-100 border rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 hover:border-gray-400 hover:bg-gray-300" wire:click.prevent="hideModal()">
                           Cancel
@@ -180,10 +182,17 @@
           </button>
         </div>
       </div>
+                <?php 
+                if(session()->has('memberImage')){
+                  $photo = session()->get('memberImage');
+                }else{
+                  $photo = "tempProfileImage.png";
+                }
+                  ?>
       <div class="flex flex-row items-center justify-between py-2">
         <div class="flex flex-row items-center">
           <a href="#" class="flex flex-row items-center rounded-lg focus:outline-none focus:shadow-outline">
-            <img class="object-cover w-8 h-8 rounded-full" src="{{url('backgroundImage/tempProfileImage.png')}}" alt="">
+            <img class="object-cover w-8 h-8 rounded-full" src="{{url('storage/profileImage/storage/'.$photo)}}" alt="">
             <p class="ml-2 text-base font-medium">{{$announce['member']['name']}}</p>
           </a>
         </div>

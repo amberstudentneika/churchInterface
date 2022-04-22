@@ -88,9 +88,9 @@
         </div>
   
     <form wire:submit.prevent="goSubmit">
-        <div class="flex justify-center">
+        <div class="">
           <div class="py-2">
-           <input wire:model="heading" placeholder="Category name" class="@error('heading') border-red-500 @enderror  resize-none rounded-sm bg-gray-100  border border-gray-300 outline-none"/>
+           <input wire:model="heading" placeholder="Category name" class="@error('heading') border-red-500 @enderror py-2 px-4 mt-5 resize-none rounded-sm bg-gray-100 w-full  border border-gray-300 outline-none"/>
            @error('heading')
            <p class="mt-4 text-xs italic text-red-500">
                {{ $message }}
@@ -98,9 +98,9 @@
            @enderror 
           </div>
        </div>
-        <div class="flex justify-center">
+        <div class="">
           <div class="py-2">
-           <textarea wire:model="detail" placeholder="Tell us more about the category..." class="@error('detail')  border-red-500 @enderror  resize-none rounded-sm bg-gray-100 p-3 h-20 border border-gray-300 outline-none"></textarea>
+           <textarea wire:model="detail" placeholder="Tell us more about the category..." class="@error('detail')  border-red-500 @enderror  resize-none w-full rounded-sm bg-gray-100 p-3 h-36 border border-gray-300 outline-none"></textarea>
            @error('detail')
            <p class="mt-4 text-xs italic text-red-500">
                {{ $message }}
@@ -133,9 +133,9 @@
         </div>
   
     <form wire:submit.prevent="update">
-        <div class="flex justify-center">
+        <div class="">
           <div class="py-2">
-           <input wire:model="heading" placeholder="Category name" class="@error('heading') border-red-500 @enderror  resize-none rounded-sm bg-gray-100  border border-gray-300 outline-none"/>
+           <input wire:model="heading" placeholder="Category name" class="@error('heading') border-red-500 @enderror w-full  mt-5  py-2 px-4 resize-none rounded-sm bg-gray-100  border border-gray-300 outline-none"/>
            @error('heading')
            <p class="mt-4 text-xs italic text-red-500">
                {{ $message }}
@@ -143,9 +143,9 @@
            @enderror 
           </div>
        </div>
-        <div class="flex justify-center">
+        <div class="">
           <div class="py-2">
-           <textarea wire:model="detail" placeholder="Tell us more about the category..." class="@error('detail')  border-red-500 @enderror  resize-none rounded-sm bg-gray-100 p-3 h-20 border border-gray-300 outline-none"></textarea>
+           <textarea wire:model="detail" placeholder="Tell us more about the category..." class="@error('detail')  border-red-500 @enderror py-2 px-4 w-full resize-none rounded-sm bg-gray-100 p-3 h-20 border border-gray-300 outline-none"></textarea>
            @error('detail')
            <p class="mt-4 text-xs italic text-red-500">
                {{ $message }}

@@ -17,23 +17,20 @@ Route::get('/',[App\Http\Controllers\LoginController::class,'index'])->name('log
 Route::get('/signup',[App\Http\Controllers\RegisterController::class,'index'])->name('register');
 Route::get('/system-temporarily-down',[App\Http\Controllers\RegisterController::class,'errorAlert'])->name('errorAlert');
 Route::get('/logout',[App\Http\Controllers\MemberController::class,'logout'])->name('logout');
-Route::get('/test',function(){
-    return view('test');
-});
 
-// Route::group(["middleware" => ["admin"]], function(){
+Route::group(["middleware" => ["admin"]], function(){
     //
     Route::get('/category',[App\Http\Controllers\AdminController::class,'category'])->name('adminCategory');
     Route::get('/announcement',[App\Http\Controllers\AdminController::class,'announcement'])->name('adminAnnouncement');
     Route::get('/feed',[App\Http\Controllers\AdminController::class,'index'])->name('adminFeed');
     Route::get('/edit/profile',[App\Http\Controllers\AdminController::class,'editProfPhotoAdmin'])->name('editProfilePhotoAdmin');
-// });    
+});    
 
-// Route::group(["middleware" => ["member"]], function(){
+Route::group(["middleware" => ["member"]], function(){
     
     Route::get('/member/feed',[App\Http\Controllers\MemberController::class,'index'])->name('memberFeed');
     Route::get('/member/announcement',[App\Http\Controllers\MemberController::class,'announcement'])->name('memberAnnouncement');
     Route::get('/member/category',[App\Http\Controllers\MemberController::class,'category'])->name('memberCategory');
     Route::get('/member/edit/profile',[App\Http\Controllers\MemberController::class,'editProfile'])->name('memberEditProfile');
-// });    
+});    
 

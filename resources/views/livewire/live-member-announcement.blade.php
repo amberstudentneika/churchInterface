@@ -12,9 +12,10 @@
            
           </div>
           <div class="flex flex-row items-center justify-between py-2">
+           
             <div class="flex flex-row items-center">
               <a href="#" class="flex flex-row items-center rounded-lg focus:outline-none focus:shadow-outline">
-                <img class="object-cover w-8 h-8 rounded-full" src="{{url('backgroundImage/tempProfileImage.png')}}" alt="">
+                <img class="object-cover w-8 h-8 rounded-full" src="{{url('storage/profileImage/storage/'.$announce['member']['image'])}}" alt="">
                 <p class="ml-2 text-base font-medium">{{$announce['member']['name']}}</p>
               </a>
             </div>
@@ -42,7 +43,7 @@
             </div>
           </div>
         </div>
-        </div>
+  
     
     @empty
         

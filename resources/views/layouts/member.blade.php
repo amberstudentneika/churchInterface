@@ -46,9 +46,7 @@
     <div class="w-0 h-0 overflow-y-hidden bg-white shadow-lg sm:w-1/4  md:w-1/4 lg:w-1/5 md:h-screen">
       <div class="sticky top-0 p-5 bg-white">
         <?php $photo=session()->get('memberImage')?> 
-        @if($photo ==null)
-        <?php $photo = 'tempProfileImage.png'?>
-        @endif
+        {{--  --}}
         <div class="flex justify-center mt-10">
         <img class="object-cover w-48 h-48 border border-indigo-100 shadow-lg rounded-full" src="{{url('storage/profileImage/storage/'.$photo)}}">
         </div>

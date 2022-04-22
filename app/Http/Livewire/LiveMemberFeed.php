@@ -34,7 +34,7 @@ class LiveMemberFeed extends Component
 
     public function like($postID){
         $ch=curl_init();
-        $url = 'http://192.168.0.2:8081/api/like/store';
+        $url = 'http://192.168.0.12:8081/api/like/store';
         
         $memberID=session()->get('memberID');
         $data=array(
@@ -58,7 +58,7 @@ class LiveMemberFeed extends Component
 
         public function submitComment($postID){
             $ch=curl_init();
-            $url = 'http://192.168.0.2:8081/api/comment/store';
+            $url = 'http://192.168.0.12:8081/api/comment/store';
             
             $memberID=session()->get('memberID');
             $data=array(
@@ -81,7 +81,7 @@ class LiveMemberFeed extends Component
 
         public function deleteComment($commentID,$postID){
             $ch=curl_init();
-            $url = 'http://192.168.0.2:8081/api/comment/delete/'.$commentID;
+            $url = 'http://192.168.0.12:8081/api/comment/delete/'.$commentID;
             
             $memberID=session()->get('memberID');
             $data=array(
@@ -101,7 +101,7 @@ class LiveMemberFeed extends Component
 
         public function showEditComment($commentID){
             $ch=curl_init();
-            $url = 'http://192.168.0.2:8081/api/comment/show/'.$commentID;
+            $url = 'http://192.168.0.12:8081/api/comment/show/'.$commentID;
             
          
             curl_setopt($ch,CURLOPT_URL,$url);
@@ -120,7 +120,7 @@ class LiveMemberFeed extends Component
         public function editComment(){
             $this->hideEditCommentInput();
             $ch=curl_init();
-            $url = 'http://192.168.0.2:8081/api/comment/update/'.$this->comID;
+            $url = 'http://192.168.0.12:8081/api/comment/update/'.$this->comID;
             
             $memberID=session()->get('memberID');
             $data=array(
@@ -142,12 +142,13 @@ class LiveMemberFeed extends Component
     {
         //view posts
         $ch=curl_init();
-        $url = 'http://192.168.0.2:8081/api/post/index';
+        $url = 'http://192.168.0.12:8081/api/post/index';
         
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
 
         $results = curl_exec($ch);
+        // dd($results);
         $results = json_decode($results,true);
         // dd($results );
         $result= $results['status'];

@@ -20,7 +20,7 @@
 
                 <div class="flex items-center justify-between">
                   <a href="#" class="flex flex-row items-center rounded-lg focus:outline-none focus:shadow-outline">
-                    <img class="object-cover w-8 h-8 rounded-full" src="{{url('backgroundImage/tempProfileImage.png')}}" alt="">
+                    <img class="object-cover w-8 h-8 rounded-full" src="{{url('storage/profileImage/storage/'.$post['member']['image'])}}" alt="">
                     <p class="ml-2 text-base font-medium">{{$post['member']['name']}}</p>
                   </a>
                 <span class="font-light text-gray-600"></span>
@@ -55,7 +55,7 @@
                       <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-5 h-5"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
                       <span class="ml-1">{{$post['totalLikes']}}</span>
                     </button>
-                    <button class="flex flex-row items-center ml-3 rounded-lg focus:outline-none focus:shadow-outline">
+                    <button wire:click="showComment({{$post['id']}})" class="flex flex-row items-center ml-3 rounded-lg focus:outline-none focus:shadow-outline">
                       <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-5 h-5"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
                       <span class="ml-1">{{$post['totalComments']}}</span>
                     </button>
@@ -100,26 +100,29 @@
                                 @forelse($dataComment as $comment)
                                   @if($comment['postID']==$showCom)
                                   
-                                  <div>
-                                    <img class="w-8 h-8 mt-1 mr-2 rounded-full " src="{{url('storage/profileImage/storage/'.$comment['member']['image'])}}"/>
-                                  </div>
-                                      <div class="flex items-stretch">
-                                      <div class="bg-gray-100 dark:bg-gray-700 rounded-3xl px-4 pt-2 pb-2.5">
-                                        <div class="text-sm font-semibold leading-relaxed">{{$comment['member']['name']}}</div>
-                                        {{$comment['body']}}
-                                        <?php $memberID = session()->get('memberID') ?>
-                                        @if($comment['memberID']== $memberID)
-                                        <div class="text-sm font-semibold leading-relaxed">
-                                          <button  wire:click="showEditComment({{$comment['id']}})" class="text-blue-500">edit</button>
-                                          <button wire:click="deleteComment({{$comment['id']}},'{{$comment['postID']}}')" class="text-red-500">delete</button>
-                                        @endif
-                                        </div>
-                                      </div>
-                                      
+                                  <div class="flex items-stretch">
+                                    <div>
+                                      <img class="w-8 h-8 mt-1 mr-2 rounded-full " src="{{url('storage/profileImage/storage/'.$comment['member']['image'])}}"/>
                                     </div>
-                                      <div class="text-sm ml-4 mt-0.5 text-gray-500 dark:text-gray-400">
-                                        {{\Carbon\Carbon::parse($comment['updated_at'])->diffForHumans()}}
+                                    <div class="self-auto bg-gray-100 dark:bg-gray-700 rounded-3xl px-4 pt-2 pb-2.5">
+                                      <div class="text-sm font-semibold leading-relaxed">
+                                        {{$comment['member']['name']}}
                                       </div>
+                                      {{$comment['body']}}
+                                      <?php $memberID = session()->get('memberID') ?>
+                                      @if($comment['memberID']== $memberID)
+                                      <div>
+                                        <button  wire:click="showEditComment({{$comment['id']}})" class="text-blue-500">edit</button>
+                                        <button wire:click="deleteComment({{$comment['id']}},'{{$comment['postID']}}')" class="text-red-500">delete</button>
+                                      </div>
+                                        @endif
+                                    </div>
+                                  </div>
+
+                                    <div class="text-sm ml-12 mt-0.5 mb-4 text-gray-500 dark:text-gray-400">
+                                      {{\Carbon\Carbon::parse($comment['created_at'])->diffForHumans()}}
+                                    </div>
+                                 
 
                                   @endif
                                 @empty
@@ -187,8 +190,8 @@
             <h1 class="mb-4 text-xl font-bold text-gray-700">Recent Announcement</h1>
             {{-- @forelse ( $dataAnnouncement as $dataAnnouncement ) --}}
               <div class="flex flex-col max-w-sm px-8 py-6 mx-auto bg-white rounded-lg shadow-md">
-                <div class="flex items-center justify-center"><a href="#"
-                        class="px-2 py-1 text-sm text-green-100 bg-gray-600 rounded hover:bg-gray-500">{{$dataAnnouncement['topic']}}</a>
+                <div class="flex items-center justify-center">
+                  <a href="#"  class="px-2 py-1 text-sm text-green-100 bg-gray-600 rounded hover:bg-gray-500">{{$dataAnnouncement['topic']}}</a>
                 </div>
                 <div class="mt-4"><a href="#" class="text-lg font-medium text-gray-700 hover:underline">
                   {{$dataAnnouncement['message']}}</a></div>
