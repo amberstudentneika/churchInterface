@@ -22,7 +22,7 @@ class LiveLogin extends Component
         $this->validate();
 
         $ch=curl_init();
-        $url = 'http://192.168.0.12:8081/api/login';
+        $url = 'http://192.168.0.2:8081/api/login';
         
         $data=array(
             'email'=>$this->email,
@@ -35,10 +35,11 @@ class LiveLogin extends Component
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
 
         $results = curl_exec($ch); 
+        // dd($results);
         $results = json_decode($results,true);
         $result = $results['status'];
-        // dd($result);
         if($result=="200"){
+            session()->put('memberToken',$results['token']);
             if($results['role']== 0){
                 session()->put('role',$results['role']);
                 session()->put('memberID',$results['memberID']);
@@ -52,6 +53,13 @@ class LiveLogin extends Component
                 session()->put('memberName',$results['memberName']);
                 session()->put('memberImage',$results['memberImage']);
                 return redirect()->route('adminFeed');
+            }
+            elseif($results['role']== 3){
+                session()->put('role',$results['role']);
+                session()->put('memberID',$results['memberID']);
+                session()->put('memberName',$results['memberName']);
+                session()->put('memberImage',$results['memberImage']);
+                return redirect()->route('superAdminFeed');
             }
         }
         elseif($result =="404"){

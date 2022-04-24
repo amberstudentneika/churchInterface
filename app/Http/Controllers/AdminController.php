@@ -18,5 +18,8 @@ class AdminController extends Controller
     public function announcement(){
         return view('livewireBlade.liveAdmin.liveAnnouncement');
     }
-
+    public function logout(){
+        session()->flush();
+        return redirect()->route('login');
+    }
 }

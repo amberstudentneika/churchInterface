@@ -4,7 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use Livewire\WithFileUploads;
-class LiveAdminFeed extends Component
+class LiveSuperAdminFeed extends Component
 {
     use WithFileUploads;
 
@@ -306,6 +306,7 @@ public function deleteComment($commentID,$postID){
         'postID'=>$postID,
         'memberID'=>$memberID,
     );
+    // dd($data);
     http_build_query($data);
     curl_setopt($ch,CURLOPT_URL,$url);
     curl_setopt($ch,CURLOPT_POST,true);
@@ -313,6 +314,7 @@ public function deleteComment($commentID,$postID){
     curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
     curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
     $results = curl_exec($ch);
+    // dd($results);
     $results = json_decode($results,true);
     curl_close($ch);
 }
@@ -424,6 +426,6 @@ public function editComment(){
         }
         curl_close($ch);
              
-        return view('livewire.live-admin-feed',compact('data','dataPost','dataComment'));
+        return view('livewire.live-super-admin-feed',compact('data','dataPost','dataComment'));
     }
 }

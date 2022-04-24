@@ -108,11 +108,14 @@
               <div class="flex flex-row items-center">
               </div>
               <div class="flex flex-row items-center">
+                <?php $memberID=session()->get('memberID') ?> 
+                @if($memberID == $post['memberID'])
                   <button type="button" wire:click.prevent="showEdit({{$post['id']}})">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                     </svg>
                 </button>
+                @endif
 @if($viewModal==true)
                 {{--Start of modal --}}
 
@@ -188,12 +191,15 @@
                 </div>
             </div>
             {{-- End of modal --}}
-                @endif  
+                @endif 
+                <?php $memberID=session()->get('memberID') ?> 
+                @if($memberID == $post['memberID'])
                 <button type="button" wire:click.prevent="delete({{$post['id']}})">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
                 </button>
+                @endif
               </div>
             </div>
             <div class="flex flex-row items-center justify-between py-2">
@@ -233,12 +239,23 @@
                 
                 <div class="mt-2">
                   <div class="flex justify-center">
+                  @if($editCommentInput == false)
                   <input wire:model="comment"  type="text" placeholder="Make a comment.." class="w-2/4 px-2 py-1 mr-2 border border-gray-200 rounded-sm"/>
-                    @if($editCommentInput == false)
-                    <button wire:click="submitComment({{$post['id']}})" type="submit" class="px-2 py-2 bg-green-500 rounded-sm focus:outline-none focus:shadow-outline">Post</button>
-                    @elseif($editCommentInput == true)
-                    <button wire:click="editComment()" type="submit" class="px-2 py-2 bg-green-500 rounded-sm focus:outline-none focus:shadow-outline">Edit</button>
-                    @endif
+                  @elseif($editCommentInput == true)
+                    @forelse($dataComment as $comment)
+                      @if ($comment['postID']==$comment['id'])
+                      <input wire:model="edComment"  type="text" placeholder="Make a comment.." class="w-2/4 px-2 py-1 mr-2 border border-gray-200 rounded-sm"/>
+                      @endif
+                      @empty
+                      @endforelse
+                  @endif
+                    {{-- </div> --}}
+                  
+                  @if($editCommentInput == false)
+                  <button wire:click="submitComment({{$post['id']}})" type="submit" class="px-2 py-2 bg-green-500 rounded-sm focus:outline-none focus:shadow-outline">Post</button>
+                  @elseif($editCommentInput == true)
+                  <button wire:click="editComment()" type="submit" class="px-2 py-2 bg-green-500 rounded-sm focus:outline-none focus:shadow-outline">Edit Comment </button>
+                  @endif
                     
                   @if($showComments==false)
                   <button wire:click="showComment({{$post['id']}})" type="button" class="px-2 py-2 ml-1 bg-blue-500 rounded-sm focus:outline-none focus:shadow-outline">See Comment(s)</button>
@@ -259,12 +276,12 @@
                 @if($showCom==$post['id'])
                   <div class="mt-2">
                       @if($showCom!=null)
-                      <div class=" max-w-lg p-4 antialiased text-black bg-white dark:bg-gray-800 dark:text-gray-200">
+                      <div class="max-w-lg p-4 antialiased text-black bg-white dark:bg-gray-800 dark:text-gray-200">
                             <!-- comment component -->
                             <div>
                               @forelse($dataComment as $comment)
+                              
                                 @if($comment['postID']==$showCom)
-                                 
                                   <div class="flex items-stretch">
                                     <div>
                                       <img class="w-8 h-8 mt-1 mr-2 rounded-full " src="{{url('storage/profileImage/storage/'.$comment['member']['image'])}}"/>

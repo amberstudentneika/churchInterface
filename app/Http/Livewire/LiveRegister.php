@@ -32,8 +32,12 @@ class LiveRegister extends Component
         $this->validate();
 
         $ch=curl_init();
-        $url = 'http://192.168.0.12:8081/api/register';
-        
+        $url = 'http://192.168.0.2:8081/api/register';
+        $memberToken=session()->get('memberToken');
+        $headers=[
+            'Accept: application/json',
+            'Authorization: Bearer '.$memberToken
+        ];
         $data=array(
             'firstname'=>$this->firstname,
             'lastname'=>$this->lastname,
@@ -46,7 +50,7 @@ class LiveRegister extends Component
         curl_setopt($ch,CURLOPT_POST,true);
         curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-
+        curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
         $results = curl_exec($ch);
         $results = json_decode($results,true);
         $result = $results['status'];

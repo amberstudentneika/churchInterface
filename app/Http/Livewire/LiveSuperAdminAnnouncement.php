@@ -3,13 +3,12 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-
-class LiveMemberAnnouncement extends Component
+use Livewire\WithFileUploads;
+class LiveSuperAdminAnnouncement extends Component
 {
-    
-   
+    use WithFileUploads;
     public $viewModal=false, $announceID;
-    public $heading, $contents, $photo, $oldPhoto;
+    public $heading, $contents, $photo, $oldPhoto, $editPhoto, $editOldPhoto;
     public $textPost=false;
     
 
@@ -78,6 +77,7 @@ class LiveMemberAnnouncement extends Component
           curl_setopt($ch,CURLOPT_POST,true);
           curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
           curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+  
           curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
           $results = curl_exec($ch);
           $results = json_decode($results,true);
@@ -105,14 +105,14 @@ public function showEdit($id){
     curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
     curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
     $results = curl_exec($ch);
-    // dd($results);
     $results = json_decode($results,true);
     $data=$results['data'];
+    // dd($data);
     $this->announceID=$data['id'];
     $this->heading=$data['topic'];
     $this->contents=$data['message'];
-    $this->photo=$data['image'];
-    $this->oldPhoto=$data['image'];
+    $this->editPhoto=$data['image'];
+    $this->editOldPhoto=$data['image'];
     // dd($this->photo);
     curl_close($ch);
 }
@@ -125,18 +125,19 @@ public function showEdit($id){
             'Accept: application/json',
             'Authorization: Bearer '.$memberToken
         ]; 
-        if($this->oldPhoto == $this->photo){
-            $photo = $this->oldPhoto;
-            }elseif($this->oldPhoto != $this->photo){
-                $photo=$this->photo->getClientOriginalName();
-                $this->photo->storePubliclyAs('storage',$photo,'gallery');
+        if($this->editOldPhoto== $this->editPhoto){
+            $editPhoto = $this->editOldPhoto;
+            }elseif($this->editOldPhoto != $this->editPhoto){
+                $editPhoto=$this->editPhoto->getClientOriginalName();
+                $this->editPhoto->storePubliclyAs('storage',$editPhoto,'gallery');
         }
         
         $data=array(
             'heading'=>$this->heading,
             'contents'=>$this->contents,
-            'photo'=>$photo,
+            'photo'=>$editPhoto,
         );
+        // dd($data);
         http_build_query($data);
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_POST,true);
@@ -163,7 +164,7 @@ public function showEdit($id){
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_POST,true);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-
+        curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
         $results = curl_exec($ch);
         $results = json_decode($results,true);
         curl_close($ch);
@@ -174,7 +175,7 @@ public function showEdit($id){
          $ch=curl_init();
          $url = 'http://192.168.0.2:8081/api/announcement/index';
          $memberToken=session()->get('memberToken');
-         $headers=[
+        $headers=[
             'Accept: application/json',
             'Authorization: Bearer '.$memberToken
         ]; 
@@ -189,10 +190,10 @@ public function showEdit($id){
              $dataAnnounce = array();
          }elseif($result =='200'){
              $dataAnnounce = $results['data'];
-         } if($result == null){
+         }if($result == null){
             $dataAnnounce = array();
         }
          curl_close($ch);
-        return view('livewire.live-member-announcement',compact('dataAnnounce'));
+        return view('livewire.live-super-admin-announcement',compact('dataAnnounce'));
     }
 }

@@ -52,8 +52,12 @@ class LiveAnnouncement extends Component
         }
   
           $ch=curl_init();
-          $url = 'http://192.168.0.12:8081/api/announcement/store';
-
+          $url = 'http://192.168.0.2:8081/api/announcement/store';
+          $memberToken=session()->get('memberToken');
+          $headers=[
+              'Accept: application/json',
+              'Authorization: Bearer '.$memberToken
+          ]; 
           if($this->photo!='' || $this->photo!=null){
               $photo=$this->photo->getClientOriginalName();
               $this->photo->storePubliclyAs('storage',$photo,'gallery');
@@ -74,6 +78,7 @@ class LiveAnnouncement extends Component
           curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
           curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
   
+          curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
           $results = curl_exec($ch);
           $results = json_decode($results,true);
           curl_close($ch);
@@ -87,14 +92,18 @@ public function showEdit($id){
     $this->viewModal=true;
     $this->announceID = $id;
     $ch=curl_init();
-    $url = 'http://192.168.0.12:8081/api/announcement/show/'.$this->announceID;
-    
+    $url = 'http://192.168.0.2:8081/api/announcement/show/'.$this->announceID;
+    $memberToken=session()->get('memberToken');
+        $headers=[
+            'Accept: application/json',
+            'Authorization: Bearer '.$memberToken
+        ]; 
     //$mID=session()->get('memberID');//should be ADMIN not member
   
     curl_setopt($ch,CURLOPT_URL,$url);
     curl_setopt($ch,CURLOPT_POST,true);
     curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-
+    curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
     $results = curl_exec($ch);
     $results = json_decode($results,true);
     $data=$results['data'];
@@ -110,8 +119,12 @@ public function showEdit($id){
 
     public function edit(){
         $ch=curl_init();
-        $url = 'http://192.168.0.12:8081/api/announcement/update/'.$this->announceID;
-        
+        $url = 'http://192.168.0.2:8081/api/announcement/update/'.$this->announceID;
+        $memberToken=session()->get('memberToken');
+        $headers=[
+            'Accept: application/json',
+            'Authorization: Bearer '.$memberToken
+        ]; 
         if($this->editOldPhoto== $this->editPhoto){
             $editPhoto = $this->editOldPhoto;
             }elseif($this->editOldPhoto != $this->editPhoto){
@@ -130,7 +143,7 @@ public function showEdit($id){
         curl_setopt($ch,CURLOPT_POST,true);
         curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-
+        curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
         $results = curl_exec($ch);
         // dd($results);
         $results = json_decode($results,true);
@@ -142,12 +155,16 @@ public function showEdit($id){
     public function delete($id){
         $this->announceID= $id;
         $ch=curl_init();
-        $url = 'http://192.168.0.12:8081/api/announcement/delete/'.$this->announceID;
-        
+        $url = 'http://192.168.0.2:8081/api/announcement/delete/'.$this->announceID;
+        $memberToken=session()->get('memberToken');
+        $headers=[
+            'Accept: application/json',
+            'Authorization: Bearer '.$memberToken
+        ]; 
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_POST,true);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-
+        curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
         $results = curl_exec($ch);
         $results = json_decode($results,true);
         curl_close($ch);
@@ -156,11 +173,15 @@ public function showEdit($id){
     {
          //view Announcements
          $ch=curl_init();
-         $url = 'http://192.168.0.12:8081/api/announcement/index';
-         
+         $url = 'http://192.168.0.2:8081/api/announcement/index';
+         $memberToken=session()->get('memberToken');
+        $headers=[
+            'Accept: application/json',
+            'Authorization: Bearer '.$memberToken
+        ]; 
          curl_setopt($ch,CURLOPT_URL,$url);
          curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
- 
+         curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
          $results = curl_exec($ch);
          $results = json_decode($results,true);
         //  dd($results );

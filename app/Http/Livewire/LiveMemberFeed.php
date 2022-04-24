@@ -34,8 +34,12 @@ class LiveMemberFeed extends Component
 
     public function like($postID){
         $ch=curl_init();
-        $url = 'http://192.168.0.12:8081/api/like/store';
-        
+        $url = 'http://192.168.0.2:8081/api/like/store';
+        $memberToken=session()->get('memberToken');
+        $headers=[
+            'Accept: application/json',
+            'Authorization: Bearer '.$memberToken
+        ]; 
         $memberID=session()->get('memberID');
         $data=array(
             'postID'=>$postID,
@@ -47,7 +51,7 @@ class LiveMemberFeed extends Component
         curl_setopt($ch,CURLOPT_POST,true);
         curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-
+        curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
         $results = curl_exec($ch);
         $results = json_decode($results,true);
         // dd($results);
@@ -58,8 +62,12 @@ class LiveMemberFeed extends Component
 
         public function submitComment($postID){
             $ch=curl_init();
-            $url = 'http://192.168.0.12:8081/api/comment/store';
-            
+            $url = 'http://192.168.0.2:8081/api/comment/store';
+            $memberToken=session()->get('memberToken');
+        $headers=[
+            'Accept: application/json',
+            'Authorization: Bearer '.$memberToken
+        ]; 
             $memberID=session()->get('memberID');
             $data=array(
                 'postID'=>$postID,
@@ -71,7 +79,7 @@ class LiveMemberFeed extends Component
             curl_setopt($ch,CURLOPT_POST,true);
             curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
             curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-    
+            curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
             $results = curl_exec($ch);
             // dd($results);
             $results = json_decode($results,true);
@@ -81,8 +89,12 @@ class LiveMemberFeed extends Component
 
         public function deleteComment($commentID,$postID){
             $ch=curl_init();
-            $url = 'http://192.168.0.12:8081/api/comment/delete/'.$commentID;
-            
+            $url = 'http://192.168.0.2:8081/api/comment/delete/'.$commentID;
+            $memberToken=session()->get('memberToken');
+        $headers=[
+            'Accept: application/json',
+            'Authorization: Bearer '.$memberToken
+        ]; 
             $memberID=session()->get('memberID');
             $data=array(
                 'postID'=>$postID,
@@ -93,7 +105,7 @@ class LiveMemberFeed extends Component
             curl_setopt($ch,CURLOPT_POST,true);
             curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
             curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-    
+            curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
             $results = curl_exec($ch);
             $results = json_decode($results,true);
             curl_close($ch);
@@ -101,13 +113,17 @@ class LiveMemberFeed extends Component
 
         public function showEditComment($commentID){
             $ch=curl_init();
-            $url = 'http://192.168.0.12:8081/api/comment/show/'.$commentID;
-            
+            $url = 'http://192.168.0.2:8081/api/comment/show/'.$commentID;
+            $memberToken=session()->get('memberToken');
+        $headers=[
+            'Accept: application/json',
+            'Authorization: Bearer '.$memberToken
+        ]; 
          
             curl_setopt($ch,CURLOPT_URL,$url);
             curl_setopt($ch,CURLOPT_POST,true);
             curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-    
+            curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
             $results = curl_exec($ch);
             $results = json_decode($results,true);
             $result=$results['data'];
@@ -120,8 +136,12 @@ class LiveMemberFeed extends Component
         public function editComment(){
             $this->hideEditCommentInput();
             $ch=curl_init();
-            $url = 'http://192.168.0.12:8081/api/comment/update/'.$this->comID;
-            
+            $url = 'http://192.168.0.2:8081/api/comment/update/'.$this->comID;
+            $memberToken=session()->get('memberToken');
+        $headers=[
+            'Accept: application/json',
+            'Authorization: Bearer '.$memberToken
+        ]; 
             $memberID=session()->get('memberID');
             $data=array(
                 'comment'=>$this->comment,
@@ -133,7 +153,7 @@ class LiveMemberFeed extends Component
             curl_setopt($ch,CURLOPT_POST,true);
             curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
             curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-    
+            curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
             $results = curl_exec($ch);
             $results = json_decode($results,true);
             curl_close($ch);
@@ -142,33 +162,60 @@ class LiveMemberFeed extends Component
     {
         //view posts
         $ch=curl_init();
-        $url = 'http://192.168.0.12:8081/api/post/index';
+        $url = 'http://192.168.0.2:8081/api/post/index';
+        $memberToken=session()->get('memberToken');
         
+        $headers=[
+            'Accept: application/json',
+            'Authorization: Bearer '.$memberToken
+        ];
+        curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
 
         $results = curl_exec($ch);
-        // dd($results);
         $results = json_decode($results,true);
-        // dd($results );
         $result= $results['status'];
         if($result =='404'){
             $dataPost = array();
             $dataComment = array();
             $dataCategory = array();
             $dataMembers = array();
-            $dataAnnouncement = array();
         }elseif($result =='200'){
             $dataPost = $results['data'];
             $dataComment = $results['commentData'];
             $dataCategory = $results['categoryData'];
             $dataMembers = $results['membersData'];
-            $dataAnnouncement = $results['announcementData'];
         }if($result == null){
             $dataPost = array();
             $dataComment = array();
             $dataCategory = array();
             $dataMembers = array();
+        }
+        curl_close($ch);
+
+        //view  anouncement
+        $ch=curl_init();
+        $url = 'http://192.168.0.2:8081/api/announcement/recent';
+        $memberToken=session()->get('memberToken');
+        
+        $headers=[
+            'Accept: application/json',
+            'Authorization: Bearer '.$memberToken
+        ];
+        curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
+        curl_setopt($ch,CURLOPT_URL,$url);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+
+        $results = curl_exec($ch);
+        // dd($results );
+        $results = json_decode($results,true);
+        $result= $results['status'];
+        if($result =='404'){
+            $dataAnnouncement = array();
+        }elseif($result =='200'){
+            $dataAnnouncement = $results['announcementData'];
+        }if($result == null){
             $dataAnnouncement = array();
         }
         curl_close($ch);

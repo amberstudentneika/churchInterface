@@ -47,12 +47,16 @@ class LiveMemberEditProfile extends Component
     $memberID = session()->get('memberID');
        
         $ch=curl_init();
-        $url = 'http://192.168.0.12:8081/api/profile/show/'.$memberID;
-        
+        $url = 'http://192.168.0.2:8081/api/profile/show/'.$memberID;
+        $memberToken=session()->get('memberToken');
+        $headers=[
+            'Accept: application/json',
+            'Authorization: Bearer '.$memberToken
+        ];
           curl_setopt($ch,CURLOPT_URL,$url);
           curl_setopt($ch,CURLOPT_POST,true);
           curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-  
+          curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
           $results = curl_exec($ch); 
           $results = json_decode($results,true);
         //   dd($results);
@@ -90,7 +94,12 @@ class LiveMemberEditProfile extends Component
         }
 
         $memberID = session()->get('memberID');
-        $url = 'http://192.168.0.12:8081/api/profile/update/'.$memberID;
+        $url = 'http://192.168.0.2:8081/api/profile/update/'.$memberID;
+        $memberToken=session()->get('memberToken');
+        $headers=[
+            'Accept: application/json',
+            'Authorization: Bearer '.$memberToken
+        ];
         if($this->password!="isinactive")
         {
             $data=array(
@@ -116,7 +125,7 @@ class LiveMemberEditProfile extends Component
           curl_setopt($ch,CURLOPT_POST,true);
           curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
           curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-  
+          curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
           $results = curl_exec($ch); 
         //   dd($results);
           $results = json_decode($results,true);

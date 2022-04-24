@@ -42,7 +42,7 @@
     </div>
     
     <div class="w-0 h-0 overflow-y-hidden bg-white shadow-lg md:w-1/4 lg:w-1/5 md:h-screen">
-      <div class="sticky top-0 p-5 bg-white">
+      <div class="sticky top-0 bg-white">
         <?php $photo = session()->get('memberImage')?> 
         
         <div class="flex justify-center mt-10">
@@ -66,32 +66,41 @@
       </div>
      
       <div class="flex flex-col w-full h-screen mt-8 antialiased hover:cursor-pointer">
-        <a class="w-full p-3 text-xl font-semibold text-left text-black bg-white border-t-2 border-gray-200 hover:bg-blue-200 hover:bg-blue-300" href="{{route('adminCategory')}}">
+        <a class="w-full p-3 text-xl font-semibold text-left text-black bg-white border-t-2 border-gray-200 hover:bg-blue-200 hover:bg-blue-300" href="{{route('superAdminCategory')}}">
           <svg xmlns="http://www.w3.org/2000/svg" class="float-right pt-1 pr-1 text-2xl text-black w-7 h-7" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1H8a3 3 0 00-3 3v1.5a1.5 1.5 0 01-3 0V6z" clip-rule="evenodd" />
             <path d="M6 12a2 2 0 012-2h8a2 2 0 012 2v2a2 2 0 01-2 2H2h2a2 2 0 002-2v-2z" />
           </svg>
           Category
         </a>
-        <a class="w-full p-3 text-xl font-semibold text-left text-black bg-white border-t-2 border-gray-200 hover:bg-blue-200 hover:bg-blue-300" href="{{route('adminFeed')}}">
+        <a class="w-full p-3 text-xl font-semibold text-left text-black bg-white border-t-2 border-gray-200 hover:bg-blue-200 hover:bg-blue-300" href="{{route('superAdminFeed')}}">
           <svg xmlns="http://www.w3.org/2000/svg" class="float-right pt-1 pr-1 text-2xl text-black w-7 h-7" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M2 5a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 002 2H4a2 2 0 01-2-2V5zm3 1h6v4H5V6zm6 6H5v2h6v-2z" clip-rule="evenodd" />
             <path d="M15 7h1a2 2 0 012 2v5.5a1.5 1.5 0 01-3 0V7z" />
           </svg>
           Feeds
         </a>
-        <a class="w-full p-3 text-xl font-semibold text-left text-black bg-white border-t-2 border-gray-200 hover:bg-blue-200 hover:bg-blue-300" href="{{route('adminAnnouncement')}}">
+        <a class="w-full p-3 text-xl font-semibold text-left text-black bg-white border-t-2 border-gray-200 hover:bg-blue-200 hover:bg-blue-300" href="{{route('superAdminAnnouncement')}}">
           <svg xmlns="http://www.w3.org/2000/svg" class="float-right pt-1 pr-1 text-2xl text-black w-7 h-7" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M18 3a1 1 0 00-1.447-.894L8.763 6H5a3 3 0 000 6h.28l1.771 5.316A1 1 0 008 18h1a1 1 0 001-1v-4.382l6.553 3.276A1 1 0 0018 15V3z" clip-rule="evenodd" />
-          </svg>Announcements</a>
-        <a class="w-full p-3 text-xl font-semibold text-left text-black bg-white border-t-2 border-gray-200 hover:bg-blue-200 hover:bg-blue-300" href="{{route('editProfilePhotoAdmin')}}">
+          </svg>
+          Announcements</a>
+        <a class="w-full p-3 text-xl font-semibold text-left text-black bg-white border-t-2 border-gray-200 hover:bg-blue-200 hover:bg-blue-300" href="{{route('administrator')}}">
+          <svg xmlns="http://www.w3.org/2000/svg" class="float-right pt-1 pr-1 text-2xl text-black w-7 h-7" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+          </svg>
+          Users</a>
+          <a class="w-full p-3 text-xl font-semibold text-left text-black bg-white border-t-2 border-gray-200 hover:bg-blue-200 hover:bg-blue-300" href="{{route('superAdminEditProfile')}}">
           <svg xmlns="http://www.w3.org/2000/svg" class="float-right pt-1 pr-1 text-2xl text-black w-7 h-7" viewBox="0 0 20 20" fill="currentColor">
             <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-          </svg>Edit Profile</a>
+          </svg>
+          Edit Profile</a>
+        
        <a class="w-full p-3 text-xl font-semibold text-left text-black bg-white border-t-2 border-gray-200 hover:bg-blue-200 hover:bg-blue-300" href="{{route('logout')}}">
         <svg xmlns="http://www.w3.org/2000/svg" class="float-right pt-1 pr-1 text-2xl text-black w-7 h-7" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
-        </svg>Logout</a>
+        </svg>
+        Logout</a>
       </div>
     
     </div>

@@ -32,8 +32,12 @@ class LiveCategory extends Component
     public function goSubmit(){
         $this->validate();
         $ch=curl_init();
-        $url = 'http://192.168.0.12:8081/api/category/store';
-        
+        $url = 'http://192.168.0.2:8081/api/category/store';
+        $memberToken=session()->get('memberToken');
+        $headers=[
+            'Accept: application/json',
+            'Authorization: Bearer '.$memberToken
+        ]; 
         $data=array(
             'heading'=>$this->heading,
             'detail'=>$this->detail,
@@ -44,7 +48,7 @@ class LiveCategory extends Component
         curl_setopt($ch,CURLOPT_POST,true);
         curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-
+        curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
         $results = curl_exec($ch);
         $results = json_decode($results,true);
         $result = $results['status'];
@@ -65,11 +69,16 @@ class LiveCategory extends Component
         $this->editMode=true;
         
         $ch=curl_init();
-        $url = 'http://192.168.0.12:8081/api/category/show/'.$id;
-
+        $url = 'http://192.168.0.2:8081/api/category/show/'.$id;
+        $memberToken=session()->get('memberToken');
+        $headers=[
+            'Accept: application/json',
+            'Authorization: Bearer '.$memberToken
+        ]; 
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_POST,true);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+        curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
         $results = curl_exec($ch);
         // dd($results);
         $results = json_decode($results,true);
@@ -83,8 +92,12 @@ class LiveCategory extends Component
     public function update(){
         $this->validate();
         $ch=curl_init();
-        $url = 'http://192.168.0.12:8081/api/category/update/'.$this->catID;
-        
+        $url = 'http://192.168.0.2:8081/api/category/update/'.$this->catID;
+        $memberToken=session()->get('memberToken');
+        $headers=[
+            'Accept: application/json',
+            'Authorization: Bearer '.$memberToken
+        ]; 
         $data=array(
             'heading'=>$this->heading,
             'detail'=>$this->detail,
@@ -93,7 +106,7 @@ class LiveCategory extends Component
         curl_setopt($ch,CURLOPT_POST,true);
         curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-
+        curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
         $results = curl_exec($ch);
         $results = json_decode($results,true);
         if($results['status']==204){
@@ -104,10 +117,17 @@ class LiveCategory extends Component
 
     public function delete($id){
         $ch=curl_init();
-        $url = 'http://192.168.0.12:8081/api/category/delete/'.$id;
+        $url = 'http://192.168.0.2:8081/api/category/delete/'.$id;
+        $memberToken=session()->get('memberToken');
+        $headers=[
+            'Accept: application/json',
+            'Authorization: Bearer '.$memberToken
+        ]; 
+        
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_POST,true);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+        curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
         $results = curl_exec($ch);
         $results = json_decode($results,true);
         if($results['status']==204){
@@ -118,11 +138,17 @@ class LiveCategory extends Component
     public function render()
     {
         $ch=curl_init();
-        $url = 'http://192.168.0.12:8081/api/category/index';
-        
+        $url = 'http://192.168.0.2:8081/api/category/index';
+        $memberToken=session()->get('memberToken');
+        $headers=[
+            'Accept: application/json',
+            'Authorization: Bearer '.$memberToken
+        ];
+
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
 
+        curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
         $results = curl_exec($ch);
         $results = json_decode($results,true);
         $result= $results['status'];
