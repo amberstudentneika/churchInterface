@@ -1,5 +1,5 @@
 <div>
-
+    
  @if($viewMember==true)
 <section class="h-screen px-4 antialiased text-gray-600">
        <div>

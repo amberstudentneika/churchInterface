@@ -26,7 +26,7 @@ class LiveAdminFeed extends Component
     }
     public function hideEditCommentInput(){
         $this->editCommentInput=false;
-        $this->clearField();
+        // $this->clearField();
     }
     public function viewModal(){
         $this->viewModal=true;
@@ -281,10 +281,13 @@ class LiveAdminFeed extends Component
             // dd($postID);
             $this->showCom=$postID;
             $this->showComments=true;
+            $this->comment='';
         }
         public function hideComment($postID){
+            $this->showCom=null;
             $this->hideCom=$postID;
             $this->showComments=false;
+            $this->comment='';
         }
 
 
@@ -334,7 +337,6 @@ public function showEditComment($commentID){
     $results = curl_exec($ch);
     $results = json_decode($results,true);
     $result=$results['data'];
-    // dd($result);
     $this->edComment = $result['body'];
     $this->comID = $result['id'];
     $this->showEditCommentInput();
@@ -365,6 +367,7 @@ public function editComment(){
     $results = json_decode($results,true);
     curl_close($ch);
     $this->hideEditCommentInput();
+    $this->edComment='';
 }
     public function render()
     {

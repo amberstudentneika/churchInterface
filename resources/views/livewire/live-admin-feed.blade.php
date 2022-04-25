@@ -239,38 +239,30 @@
                 
                 <div class="mt-2">
                   <div class="flex justify-center">
-                  @if($editCommentInput == false)
-                  <input wire:model="comment"  type="text" placeholder="Make a comment.." class="w-2/4 px-2 py-1 mr-2 border border-gray-200 rounded-sm"/>
-                  @elseif($editCommentInput == true)
-                    @forelse($dataComment as $comment)
-                      @if ($comment['postID']==$comment['id'])
-                      <input wire:model="edComment"  type="text" placeholder="Make a comment.." class="w-2/4 px-2 py-1 mr-2 border border-gray-200 rounded-sm"/>
-                      @endif
-                      @empty
-                      @endforelse
-                  @endif
-                    {{-- </div> --}}
-                  
-                  @if($editCommentInput == false)
-                  <button wire:click="submitComment({{$post['id']}})" type="submit" class="px-2 py-2 bg-green-500 rounded-sm focus:outline-none focus:shadow-outline">Post</button>
-                  @elseif($editCommentInput == true)
-                  <button wire:click="editComment()" type="submit" class="px-2 py-2 bg-green-500 rounded-sm focus:outline-none focus:shadow-outline">Edit Comment </button>
-                  @endif
-                    
-                  @if($showComments==false)
-                  <button wire:click="showComment({{$post['id']}})" type="button" class="px-2 py-2 ml-1 bg-blue-500 rounded-sm focus:outline-none focus:shadow-outline">See Comment(s)</button>
-                  @elseif($showComments==true)
-                      @if($showCom==$post['id'])
+                    @if($showCom!=$post['id'])  
+                    <input wire:model.defer="comment"  type="text" placeholder="Make a comment.." class="w-2/4 px-2 py-1 mr-2 border border-gray-200 rounded-sm"/>
+                    <button wire:click="submitComment({{$post['id']}})" type="button" class="px-2 py-2 bg-green-500 rounded-sm focus:outline-none focus:shadow-outline">Post</button>
+                    @elseif($editCommentInput==true) 
+                    <input wire:model.defer="edComment"  type="text" placeholder="Make a comment.." class="w-2/4 px-2 py-1 mr-2 border border-gray-200 rounded-sm"/> 
+                    <button wire:click="editComment()" type="submit" class="px-2 py-2 bg-green-500 rounded-sm focus:outline-none focus:shadow-outline">Edit Comment</button>
+                    @endif  
 
-                      @if($editCommentInput == false)
-                      <button wire:click="hideComment({{$post['id']}})" type="submit" class="px-2 py-2 ml-1 bg-red-500 rounded-sm focus:outline-none focus:shadow-outline">Hide Comment(s)</button>
-                      @elseif($editCommentInput == true)
-                      <button wire:click="hideEditCommentInput()" type="submit" class="px-2 py-2 ml-1 bg-red-500 rounded-sm focus:outline-none focus:shadow-outline">Cancel</button>
-                      @endif
-                          @elseif($showCom!=$post['id'])
-                          <button wire:click="showComment({{$post['id']}})" type="button" class="px-2 py-2 ml-1 bg-blue-500 rounded-sm focus:outline-none focus:shadow-outline">See Comment(s)</button>
-                      @endif
-                  @endif
+                      
+                    @if($showComments==false)
+                    <button wire:click="showComment({{$post['id']}})" type="button" class="px-2 py-2 ml-1 bg-blue-500 rounded-sm focus:outline-none focus:shadow-outline">See Comment(s)</button>
+                    @elseif($showComments==true)
+                        @if($showCom==$post['id'])
+                            @if($editCommentInput == false)
+                            <div class=" mx-40 ">
+                            <button wire:click="hideComment({{$post['id']}})" type="submit" class="w-full flex justify-center px-2 py-2 ml-1 bg-red-500 rounded-sm focus:outline-none focus:shadow-outline">Hide Comment(s)</button>
+                            </div>
+                            @elseif($editCommentInput == true)
+                            <button wire:click="hideEditCommentInput()" type="submit" class="px-2 py-2 ml-1 bg-red-500 rounded-sm focus:outline-none focus:shadow-outline">Cancel</button>
+                            @endif
+                        @elseif($showCom!=$post['id'])
+                            <button wire:click="showComment({{$post['id']}})" type="button" class="px-2 py-2 ml-1 bg-blue-500 rounded-sm focus:outline-none focus:shadow-outline">See Comment(s)</button>
+                        @endif
+                    @endif
                 </div>
                 @if($showComments==true)
                 @if($showCom==$post['id'])

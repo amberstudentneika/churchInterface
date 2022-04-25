@@ -43,8 +43,9 @@ class LiveAdministrator extends Component
     
         curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
         $results = curl_exec($ch);
-        // dd($results);
         $results = json_decode($results,true);
+        // dd($results);
+        session()->put('success',$results['message']);
         curl_close($ch);
 }
 

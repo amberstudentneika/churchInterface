@@ -63,8 +63,8 @@ class LiveLogin extends Component
             }
         }
         elseif($result =="404"){
-           session()->flash('failed',$results['message']);
-           return redirect()->route('login');
+            session()->flash('failedLogin',$results['message']);
+            return redirect()->back();          
         }if($result == null){
             return redirect()->route('errorAlert');
         }

@@ -1,5 +1,4 @@
 <div>
-
     
     <div class="w-1/2 max-w-xl px-4 py-4 mx-auto bg-white rounded-lg shadow-md">
         <div class="flex justify-center">

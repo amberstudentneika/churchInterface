@@ -7,7 +7,7 @@ use Livewire\WithFileUploads;
 class LiveSuperAdminFeed extends Component
 {
     use WithFileUploads;
-
+public $commentText;
 
     public $viewModal=false;
     public $textPost=false;
@@ -18,7 +18,7 @@ class LiveSuperAdminFeed extends Component
     public $editPostID, $editCatID, $categoryID, $editHeading;
     public $editContents, $editPhoto, $oldPhoto;
 //Comment Variable
-    public $edComment,$comment, $showComments=false, $showCom, $hideCom;
+    public $edComment, $comment, $showComments=false, $showCom, $hideCom;
     public $editCommentInput=false;
 
     public function showEditCommentInput(){
@@ -26,7 +26,7 @@ class LiveSuperAdminFeed extends Component
     }
     public function hideEditCommentInput(){
         $this->editCommentInput=false;
-        $this->clearField();
+        // $this->clearField();
     }
     public function viewModal(){
         $this->viewModal=true;
@@ -191,8 +191,8 @@ class LiveSuperAdminFeed extends Component
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
         curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
         $results = curl_exec($ch);
-        // dd($results);
         $results = json_decode($results,true);
+        // dd($results);
         curl_close($ch);
         $this->clearField();
         $this->hideModal();
@@ -214,6 +214,7 @@ class LiveSuperAdminFeed extends Component
         curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
         $results = curl_exec($ch);
         $results = json_decode($results,true);
+        // $this->comment='';
         curl_close($ch);
     }
    
@@ -250,13 +251,14 @@ class LiveSuperAdminFeed extends Component
 //END OF LIKES CRUD OPERATIONS
 
         public function submitComment($postID){
+            // dd($postID);
             $ch=curl_init();
             $url = 'http://192.168.0.2:8081/api/comment/store';
             $memberToken=session()->get('memberToken');
-        $headers=[
-            'Accept: application/json',
-            'Authorization: Bearer '.$memberToken
-        ]; 
+            $headers=[
+                'Accept: application/json',
+                'Authorization: Bearer '.$memberToken
+            ]; 
         
             $memberID=session()->get('memberID');
             $data=array(
@@ -264,6 +266,7 @@ class LiveSuperAdminFeed extends Component
                 'memberID'=>$memberID,
                 'comment'=>$this->comment,
             );
+            // dd($data);
             http_build_query($data);
             curl_setopt($ch,CURLOPT_URL,$url);
             curl_setopt($ch,CURLOPT_POST,true);
@@ -281,10 +284,13 @@ class LiveSuperAdminFeed extends Component
             // dd($postID);
             $this->showCom=$postID;
             $this->showComments=true;
+            $this->comment='';
         }
         public function hideComment($postID){
+            $this->showCom=null;
             $this->hideCom=$postID;
             $this->showComments=false;
+            $this->comment='';
         }
 
 
@@ -336,12 +342,12 @@ public function showEditComment($commentID){
     $results = curl_exec($ch);
     $results = json_decode($results,true);
     $result=$results['data'];
-    // dd($result);
     $this->edComment = $result['body'];
     $this->comID = $result['id'];
     $this->showEditCommentInput();
     curl_close($ch);
 }
+
 public function editComment(){
     $ch=curl_init();
     $url = 'http://192.168.0.2:8081/api/comment/update/'.$this->comID;
@@ -367,6 +373,8 @@ public function editComment(){
     $results = json_decode($results,true);
     curl_close($ch);
     $this->hideEditCommentInput();
+    $this->edComment='';
+
 }
     public function render()
     {

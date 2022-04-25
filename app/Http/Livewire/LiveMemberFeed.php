@@ -7,7 +7,7 @@ use Livewire\Component;
 class LiveMemberFeed extends Component
 {
     //Comment Variable
-    public $comID, $comment, $showComments=false, $showCom, $hideCom;
+    public $comID, $edComment, $comment, $showComments=false, $showCom, $hideCom;
     public $editCommentInput=false;
   
     public function showEditCommentInput(){
@@ -15,7 +15,7 @@ class LiveMemberFeed extends Component
     }
     public function hideEditCommentInput(){
         $this->editCommentInput=false;
-        $this->clearField();
+        // $this->clearField();
     }
     
     public function clearField(){
@@ -25,10 +25,13 @@ class LiveMemberFeed extends Component
     public function showComment($postID){
         $this->showCom=$postID;
         $this->showComments=true;
+        $this->comment='';
     }
     public function hideComment($postID){
-        $this->hideCom=$postID;
-        $this->showComments=false;
+            $this->showCom=null;
+            $this->hideCom=$postID;
+            $this->showComments=false;
+            $this->comment='';
     }
 
 
@@ -112,6 +115,7 @@ class LiveMemberFeed extends Component
         }
 
         public function showEditComment($commentID){
+       
             $ch=curl_init();
             $url = 'http://192.168.0.2:8081/api/comment/show/'.$commentID;
             $memberToken=session()->get('memberToken');
@@ -127,27 +131,26 @@ class LiveMemberFeed extends Component
             $results = curl_exec($ch);
             $results = json_decode($results,true);
             $result=$results['data'];
-            // dd($result);
-            $this->comment = $result['body'];
+            $this->edComment = $result['body'];
             $this->comID = $result['id'];
             $this->showEditCommentInput();
             curl_close($ch);
         }
+
         public function editComment(){
-            $this->hideEditCommentInput();
             $ch=curl_init();
             $url = 'http://192.168.0.2:8081/api/comment/update/'.$this->comID;
             $memberToken=session()->get('memberToken');
-        $headers=[
-            'Accept: application/json',
-            'Authorization: Bearer '.$memberToken
-        ]; 
+            $headers=[
+                'Accept: application/json',
+                'Authorization: Bearer '.$memberToken
+            ]; 
             $memberID=session()->get('memberID');
             $data=array(
-                'comment'=>$this->comment,
+                'comment'=>$this->edComment,
                 'memberID'=>$memberID,
             );
-            
+            // dd($data);
             http_build_query($data);
             curl_setopt($ch,CURLOPT_URL,$url);
             curl_setopt($ch,CURLOPT_POST,true);
@@ -157,6 +160,8 @@ class LiveMemberFeed extends Component
             $results = curl_exec($ch);
             $results = json_decode($results,true);
             curl_close($ch);
+            $this->hideEditCommentInput();
+            $this->edComment='';
         }
     public function render()
     {
