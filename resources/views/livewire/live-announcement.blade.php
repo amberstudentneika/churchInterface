@@ -10,7 +10,7 @@
 
 <form wire:submit.prevent="onSubmit">
   
-    <div class=" ">
+    <div class="">
       <div class="py-2">
        <input wire:model="heading" placeholder="Title" class="@error('heading')  border-red-500 @enderror py-2 px-4 w-full mt-5 resize-none rounded-sm bg-gray-100  border border-gray-300 outline-none"/>
        @error('heading')
@@ -20,7 +20,7 @@
        @enderror 
       </div>
    </div>
-    <div class=" ">
+    <div class="">
       <div class="py-2">
        <textarea wire:model="contents" placeholder="What's on your mind?" class="@error('contents')  border-red-500 @enderror  resize-none rounded-sm bg-gray-100 w-full p-3 h-36 border border-gray-300 outline-none"></textarea>
        @error('contents')
@@ -31,39 +31,59 @@
       </div>
   </div>
   @if($textPost==true)
-      <div class="flex justify-center"></label>
-          <div class='flex items-center justify-center w-full'>
-              <label class='flex flex-col w-full h-32 border-4 border-dashed cursor-pointer hover:bg-gray-100 hover:border-gray-200 group'>
-                  <div class='flex flex-col items-center justify-center pt-7'>
-                      <svg class="w-10 h-10 text-purple-400 group-hover:text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                   @if($photo == '') 
-                   <p class='pt-1 text-sm tracking-wider text-gray-400 lowercase group-hover:text-purple-600'>upload either JPG, JPEG, PDF file</p>
-                   @else
-                   <p class='pt-1 text-sm tracking-wider text-purple-600 lowercase'>{{$photo->getClientOriginalName()}}</p>
-                  @endif
-                  </div>
-                  <input wire:model="photo" type="file" class="hidden" />
-              </label>  
+  <div class="flex justify-center"></label>
+    <div class='flex items-center justify-center w-full'>
+      @if($photo== '') 
+        <label class='flex flex-col w-full h-32 border-4 border-dashed cursor-pointer hover:bg-gray-100 hover:border-gray-200 group'>
+            <div class='flex flex-col items-center justify-center pt-7'>
+                <svg class="w-10 h-10 text-purple-400 group-hover:text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                <p class='pt-1 text-sm tracking-wider text-gray-400 lowercase group-hover:text-purple-600'>upload either JPG, JPEG or PNG</p>
+              </div>
+              <input id="photo" wire:model="photo" accept=".jpg,.png,.jpeg" type="file" class="hidden" />
+              <div wire:loading wire:target="photo"><span class="px-2 py-2 mt-5 text-white bg-green-300 rounded-md">Uploading..</span></div>
+              <p class="mt-4 text-xs italic text-center text-red-500">
+                {{ $fileError }}
+              </p>
+        </label>
+        @else
+        <div class="flex flex-col mb-5">
+            <?php
+              $tempPhoto = $photo->getClientOriginalName();
+              $extens = substr(strrchr($tempPhoto, '.'), 1);
+              $extens = strtoupper($extens);
+            ?>
+            @if($extens == "PNG" || $extens == "JPG" || $extens == "JPEG")
+          <div>
+            <img class="object-cover w-48 h-48 border border-indigo-100 rounded-md shadow-lg" src="{{$photo->temporaryUrl()}}">
           </div>
-        </div>
+          @endif
+          <div>
+            <p class='pt-1 text-sm font-bold tracking-wider text-center text-purple-600 lowercase'>{{$photo->getClientOriginalName()}}</p>
+          </div>
+          <div>
+          <p class="mt-4 text-xs italic text-center text-red-500">
+            {{ $fileError }}
+          </p>
+          </div>
+          </div>
+         @endif 
+    </div>
+  </div>
+
  @endif
-    {{-- @if(session()->has('error'))
-    <p class="mt-4 text-xs italic text-center text-red-500">
-    {{ session()->get('error') }}
-    </p>
-    @endif --}}
+   
 
   <div class="flex justify-center">  
     <div class="flex flex-row items-center py-2">
       @if($textPost==false)
       <button type="button" wire:click="showMedia" class="flex flex-row items-center px-2 py-2 bg-blue-400 rounded-md focus:outline-none focus:shadow-outline">
         {{-- <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-5 h-5"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg> --}}
-        <span class="ml-1">Add Photo/Video</span>
+        <span class="ml-1">Add Photo</span>
       </button>
       @elseif($textPost==true)
       <button type="button" wire:click="hideMedia" class="flex flex-row items-center px-2 py-2 bg-red-400 rounded-md focus:outline-none focus:shadow-outline">
         {{-- <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-5 h-5"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg> --}}
-        <span class="ml-1">Remove Photo/Video</span>
+        <span class="ml-1">Remove Photo</span>
       </button>
       @endif
       <button   type="submit" class="flex flex-row items-center px-2 py-2 ml-3 bg-green-400 rounded-md focus:outline-none focus:shadow-outline">
@@ -79,7 +99,7 @@
 @forelse ($dataAnnounce as $announce)
 <div class="grid grid-cols-1 gap-6 px-4 my-6 md:px-6 lg:px-8">
 
-    <div class="max-w-xl w-full px-4 py-4 mx-auto bg-white rounded-lg shadow-md">
+    <div class="w-full max-w-xl px-4 py-4 mx-auto bg-white rounded-lg shadow-md">
       <div class="flex flex-row items-center justify-between py-2">
         <div class="flex flex-row items-center">
         </div>
@@ -105,59 +125,95 @@
                  
                   <label for="" class="text-sm font-bold leading-tight tracking-normal text-gray-800">Content</label>
                   <!-- <div class="relative mt-2 mb-5"> -->
-                      <textarea wire:model="contents" class="flex items-center w-full h-36 px-2 py-4 pl-3 mb-8 text-sm font-normal text-gray-600 border border-gray-300 rounded resize-none focus:outline-none focus:border focus:border-indigo-700" placeholder="What's on your mind?"></textarea>
+                      <textarea wire:model="contents" class="flex items-center w-full px-2 py-4 pl-3 mb-8 text-sm font-normal text-gray-600 border border-gray-300 rounded resize-none h-36 focus:outline-none focus:border focus:border-indigo-700" placeholder="What's on your mind?"></textarea>
                   <!-- </div> -->
                    
                   @if($editPhoto != "no image")
-                  <div class="flex justify-center">
-                      <div class='flex items-center justify-center w-full'>
-                          <label class='flex flex-col w-full h-32 border-4 border-dashed cursor-pointer hover:bg-gray-100 hover:border-gray-200 group'>
-                              <div class='flex flex-col items-center justify-center pt-7'>
-                                  <svg class="w-10 h-10 text-purple-400 group-hover:text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                  
-                                  @if($editPhoto == $editOldPhoto)
-                                  <p class='pt-1 text-sm tracking-wider text-purple-600 lowercase'>{{$editPhoto}}</p>
-                                  @elseif($editPhoto!= $editOldPhoto)
-                                  <p class='pt-1 text-sm tracking-wider text-purple-600 lowercase'>{{$editPhoto->getClientOriginalName()}}</p>
-                                  @else
-                                  <p class='pt-1 text-sm tracking-wider text-gray-400 lowercase group-hover:text-purple-600'>upload either JPG, JPEG, PDF file</p>
-                                  @endif
-                              </div>
-                              <input wire:model="editPhoto" type="file" class="hidden" />
-                          </label>  
+                      <div class="">
+                        @if($editPhoto != $editOldPhoto)
+                            <?php
+                            $tempPhoto = $editPhoto->getClientOriginalName();
+                            $extens = substr(strrchr($tempPhoto, '.'), 1);
+                            $extens = strtoupper($extens);
+                            ?>
+                            @if($extens == "PNG" || $extens == "JPG" || $extens == "JPEG")
+                            <div>
+                              <img class="object-cover border border-indigo-100 shadow-lg" src="{{ $editPhoto->temporaryUrl() }}">
+                            </div>
+                            <?php $fileError='';?>
+                            @endif
+                            <p class='pt-1 text-sm font-bold tracking-wider text-center text-purple-600 lowercase'>{{$editPhoto->getClientOriginalName()}}</p>
+                            <p class="mt-4 text-xs italic text-center text-red-500">
+                              {{ $fileError }}
+                            </p>
+                        @elseif($editPhoto == $editOldPhoto)
+                            <img src="{{url('storage/gallery/storage/'.$editPhoto)}}" class="object-cover border border-indigo-100 shadow-lg"/>
+                        @elseif($editPhoto== '')
+                            <p class='pt-1 text-sm tracking-wider text-gray-400 lowercase group-hover:text-purple-600'>upload either JPG, JPEG or PNG</p>
+                        @endif
                       </div>
-                    </div>
-                    @elseif($editPhoto == "no image")
-                  <div class="flex justify-center">
-                    {{-- <label class="mb-1 text-xs font-semibold text-blue-700 uppercase md:text-sm text-light"> --}}
-                      <div class='flex items-center justify-center w-full'>
-                          <label class='flex flex-col w-full h-32 border-4 border-dashed cursor-pointer hover:bg-gray-100 hover:border-gray-200 group'>
-                              <div class='flex flex-col items-center justify-center pt-7'>
-                                  <svg class="w-10 h-10 text-purple-400 group-hover:text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                  @if($editPhoto== '') 
-                                  <p class='pt-1 text-sm tracking-wider text-gray-400 lowercase group-hover:text-purple-600'>upload either JPG, JPEG, PDF file</p>
-                                  @elseif($editPhoto == $editOldPhoto)
-                                  <p class='pt-1 text-sm tracking-wider text-purple-600 lowercase'>{{$editPhoto}}</p>
-                                  @elseif($editPhoto != $editOldPhoto)
-                                  <p class='pt-1 text-sm tracking-wider text-purple-600 lowercase'>{{$editPhoto->getClientOriginalName()}}</p>
-                                  @endif
-                              </div>
-                              <input wire:model="editPhoto" type="file" class="hidden" />
-                          </label>  
+                      <div wire:loading wire:target="editPhoto"><span class="px-2 py-2 mt-5 text-white bg-green-300 rounded-md">Uploading..</span></div>
+                      <div class="flex justify-center mt-5"> <label class="px-4 py-2 mt-2 mb-5 font-bold text-gray-200 bg-blue-600 rounded-sm">Change photo
+                        <input type="file" wire:model="editPhoto"  accept=".jpg,.png,.jpeg" class="hidden">
+                      </label>
                       </div>
-                      
-                    </div>
-                    @endif
-                    @if(session()->has('error'))
-                    <p class="mt-4 text-xs italic text-center text-red-500">
-                      {{ session()->get('error') }}
-                    </p>
-                    @endif
+
+                      @if(session()->has('error'))
+                        <p class="mt-4 text-xs italic text-center text-red-500">
+                          {{ session()->get('error') }}
+                        </p>
+                      @endif
+                      @elseif($editPhoto == "no image")
+                      <div class="flex justify-center"></label>
+                        <div class='flex items-center justify-center w-full'>
+                          @if($photo== '') 
+                            <label class='flex flex-col w-full h-32 border-4 border-dashed cursor-pointer hover:bg-gray-100 hover:border-gray-200 group'>
+                                <div class='flex flex-col items-center justify-center pt-7'>
+                                    <svg class="w-10 h-10 text-purple-400 group-hover:text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                    <p class='pt-1 text-sm tracking-wider text-gray-400 lowercase group-hover:text-purple-600'>upload either JPG, JPEG or PNG</p>
+                                  </div>
+                                  <input id="photo" wire:model="photo" accept=".jpg,.png,.jpeg" type="file" class="hidden" />
+                                  <div wire:loading wire:target="photo"><span class="px-2 py-2 mt-5 text-white bg-green-300 rounded-md">Uploading..</span></div>
+                                  <p class="mt-4 text-xs italic text-center text-red-500">
+                                    {{ $fileError }}
+                                  </p>
+                            </label>
+                            @else
+                            <div class="flex flex-col mb-5">
+                                <?php
+                                  $tempPhoto = $photo->getClientOriginalName();
+                                  $extens = substr(strrchr($tempPhoto, '.'), 1);
+                                  $extens = strtoupper($extens);
+                                ?>
+                                @if($extens == "PNG" || $extens == "JPG" || $extens == "JPEG")
+                              <div>
+                                <img class="object-cover w-48 h-48 border border-indigo-100 rounded-md shadow-lg" src="{{$photo->temporaryUrl()}}">
+                              </div>
+                              @endif
+                              <div>
+                                <p class='pt-1 text-sm font-bold tracking-wider text-center text-purple-600 lowercase'>{{$photo->getClientOriginalName()}}</p>
+                              </div>
+                              <div>
+                              <p class="mt-4 text-xs italic text-center text-red-500">
+                                {{ $fileError }}
+                              </p>
+                              </div>
+                              </div>
+                            @endif 
+                        </div>
+                      </div>
+                  @endif
+                  @if(session()->has('error'))
+                  <p class="mt-4 text-xs italic text-center text-red-500">
+                    {{ session()->get('error') }}
+                  </p>
+                  @endif
 
 
 
 
-                  <div class="flex justify-center mt-5 w-full">
+
+                  <div class="flex justify-center w-full mt-5">
                       <button wire:click="edit()" type="submit" class="px-8 py-2 text-sm text-white transition duration-150 ease-in-out bg-indigo-700 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 hover:bg-indigo-600">Finish</button>
                       <button class="px-8 py-2 ml-3 text-sm text-gray-600 transition duration-150 ease-in-out bg-gray-100 border rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 hover:border-gray-400 hover:bg-gray-300" wire:click.prevent="hideModal()">
                           Cancel

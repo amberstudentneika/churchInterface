@@ -66,7 +66,7 @@ return [
             ],
             'servers' => [
                 [
-                    'host' => env('MEMCACHED_HOST', '192.168.0.2'),
+                    'host' => env('MEMCACHED_HOST', '192.168.0.3'),
                     'port' => env('MEMCACHED_PORT', 11211),
                     'weight' => 100,
                 ],
