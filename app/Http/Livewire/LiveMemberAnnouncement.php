@@ -53,7 +53,7 @@ class LiveMemberAnnouncement extends Component
         }
   
           $ch=curl_init();
-          $url = 'http://192.168.0.3:8081/api/announcement/store';
+          $url = 'http://192.168.0.9:8081/api/announcement/store';
           $memberToken=session()->get('memberToken');
           $headers=[
               'Accept: application/json',
@@ -92,7 +92,7 @@ public function showEdit($id){
     $this->viewModal=true;
     $this->announceID = $id;
     $ch=curl_init();
-    $url = 'http://192.168.0.3:8081/api/announcement/show/'.$this->announceID;
+    $url = 'http://192.168.0.9:8081/api/announcement/show/'.$this->announceID;
     $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
@@ -119,7 +119,7 @@ public function showEdit($id){
 
     public function edit(){
         $ch=curl_init();
-        $url = 'http://192.168.0.3:8081/api/announcement/update/'.$this->announceID;
+        $url = 'http://192.168.0.9:8081/api/announcement/update/'.$this->announceID;
         $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
@@ -154,7 +154,7 @@ public function showEdit($id){
     public function delete($id){
         $this->announceID= $id;
         $ch=curl_init();
-        $url = 'http://192.168.0.3:8081/api/announcement/delete/'.$this->announceID;
+        $url = 'http://192.168.0.9:8081/api/announcement/delete/'.$this->announceID;
         $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
@@ -172,7 +172,7 @@ public function showEdit($id){
     {
          //view Announcements
          $ch=curl_init();
-         $url = 'http://192.168.0.3:8081/api/announcement/index';
+         $url = 'http://192.168.0.9:8081/api/announcement/index';
          $memberToken=session()->get('memberToken');
          $headers=[
             'Accept: application/json',

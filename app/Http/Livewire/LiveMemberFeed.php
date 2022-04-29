@@ -37,7 +37,7 @@ class LiveMemberFeed extends Component
 
     public function like($postID){
         $ch=curl_init();
-        $url = 'http://192.168.0.3:8081/api/like/store';
+        $url = 'http://192.168.0.9:8081/api/like/store';
         $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
@@ -65,7 +65,7 @@ class LiveMemberFeed extends Component
 
         public function submitComment($postID){
             $ch=curl_init();
-            $url = 'http://192.168.0.3:8081/api/comment/store';
+            $url = 'http://192.168.0.9:8081/api/comment/store';
             $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
@@ -92,7 +92,7 @@ class LiveMemberFeed extends Component
 
         public function deleteComment($commentID,$postID){
             $ch=curl_init();
-            $url = 'http://192.168.0.3:8081/api/comment/delete/'.$commentID;
+            $url = 'http://192.168.0.9:8081/api/comment/delete/'.$commentID;
             $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
@@ -117,7 +117,7 @@ class LiveMemberFeed extends Component
         public function showEditComment($commentID){
        
             $ch=curl_init();
-            $url = 'http://192.168.0.3:8081/api/comment/show/'.$commentID;
+            $url = 'http://192.168.0.9:8081/api/comment/show/'.$commentID;
             $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
@@ -139,7 +139,7 @@ class LiveMemberFeed extends Component
 
         public function editComment(){
             $ch=curl_init();
-            $url = 'http://192.168.0.3:8081/api/comment/update/'.$this->comID;
+            $url = 'http://192.168.0.9:8081/api/comment/update/'.$this->comID;
             $memberToken=session()->get('memberToken');
             $headers=[
                 'Accept: application/json',
@@ -167,7 +167,7 @@ class LiveMemberFeed extends Component
     {
         //view posts
         $ch=curl_init();
-        $url = 'http://192.168.0.3:8081/api/post/index';
+        $url = 'http://192.168.0.9:8081/api/post/index';
         $memberToken=session()->get('memberToken');
         
         $headers=[
@@ -201,7 +201,7 @@ class LiveMemberFeed extends Component
 
         //view  anouncement
         $ch=curl_init();
-        $url = 'http://192.168.0.3:8081/api/announcement/recent';
+        $url = 'http://192.168.0.9:8081/api/announcement/recent';
         $memberToken=session()->get('memberToken');
         
         $headers=[
