@@ -167,41 +167,80 @@
                             <textarea wire:model="editContents" class="flex items-center w-full h-10 pl-3 mb-8 text-sm font-normal text-gray-600 border border-gray-300 rounded resize-none focus:outline-none focus:border focus:border-indigo-700" placeholder="What's on your mind?"></textarea>
                         <!-- </div> -->
                         @if($editPhoto!="no image")
-                        <div class="">
-                          @if($editPhoto != $oldPhoto)
-                              <?php
-                              $tempPhoto = $editPhoto->getClientOriginalName();
-                              $extens = substr(strrchr($tempPhoto, '.'), 1);
-                              $extens = strtoupper($extens);
-                              ?>
-                              @if($extens == "PNG" || $extens == "JPG" || $extens == "JPEG")
-                              <div>
-                                <img class="object-cover border border-indigo-100 shadow-lg" src="{{ $editPhoto->temporaryUrl() }}">
-                              </div>
-                              <?php $fileError='';?>
+                            <div class="">
+                              @if($editPhoto != $oldPhoto)
+                                  <?php
+                                  $tempPhoto = $editPhoto->getClientOriginalName();
+                                  $extens = substr(strrchr($tempPhoto, '.'), 1);
+                                  $extens = strtoupper($extens);
+                                  ?>
+                                  @if($extens == "PNG" || $extens == "JPG" || $extens == "JPEG")
+                                  <div>
+                                    <img class="object-cover border border-indigo-100 shadow-lg" src="{{ $editPhoto->temporaryUrl() }}">
+                                  </div>
+                                  <?php $fileError='';?>
+                                  @endif
+                                  <p class='pt-1 text-sm font-bold tracking-wider text-center text-purple-600 lowercase'>{{$editPhoto->getClientOriginalName()}}</p>
+                                  <p class="mt-4 text-xs italic text-center text-red-500">
+                                    {{ $fileError }}
+                                  </p>
+                              @elseif($editPhoto == $oldPhoto)
+                                  <img src="{{url('storage/gallery/storage/'.$editPhoto)}}" class="object-cover border border-indigo-100 shadow-lg"/>
+                              @elseif($editPhoto== '')
+                                  <p class='pt-1 text-sm tracking-wider text-gray-400 lowercase group-hover:text-purple-600'>upload either JPG, JPEG or PNG</p>
                               @endif
-                              <p class='pt-1 text-sm font-bold tracking-wider text-center text-purple-600 lowercase'>{{$editPhoto->getClientOriginalName()}}</p>
-                              <p class="mt-4 text-xs italic text-center text-red-500">
-                                {{ $fileError }}
-                              </p>
-                          @elseif($editPhoto == $oldPhoto)
-                              <img src="{{url('storage/gallery/storage/'.$editPhoto)}}" class="object-cover border border-indigo-100 shadow-lg"/>
-                          @elseif($editPhoto== '')
-                              <p class='pt-1 text-sm tracking-wider text-gray-400 lowercase group-hover:text-purple-600'>upload either JPG, JPEG or PNG</p>
-                          @endif
-                        </div>
-                        <div wire:loading wire:target="editPhoto"><span class="px-2 py-2 mt-5 text-white bg-green-300 rounded-md">Uploading..</span></div>
-                        <div class="flex justify-center mt-5"> <label class="px-4 py-2 mt-2 mb-5 font-bold text-gray-200 bg-blue-600 rounded-sm">Change photo
-                          <input type="file" wire:model="editPhoto"  accept=".jpg,.png,.jpeg" class="hidden">
-                        </label>
-                        </div>
+                            </div>
+                            <div wire:loading wire:target="editPhoto"><span class="px-2 py-2 mt-5 text-white bg-green-300 rounded-md">Uploading..</span></div>
+                            <div class="flex justify-center mt-5"> <label class="px-4 py-2 mt-2 mb-5 font-bold text-gray-200 bg-blue-600 rounded-sm">Change photo
+                              <input type="file" wire:model="editPhoto"  accept=".jpg,.png,.jpeg" class="hidden">
+                            </label>
+                            </div>
 
                         @if(session()->has('error'))
                           <p class="mt-4 text-xs italic text-center text-red-500">
                             {{ session()->get('error') }}
                           </p>
                         @endif
-                          @endif
+                        @elseif($editPhoto == "no image")
+                      <div class="flex justify-center"></label>
+                        <div class='flex items-center justify-center w-full'>
+                          @if($editPhoto== '' || $editPhoto == "no image") 
+                            <label class='flex flex-col w-full h-32 border-4 border-dashed cursor-pointer hover:bg-gray-100 hover:border-gray-200 group'>
+                                <div class='flex flex-col items-center justify-center pt-7'>
+                                    <svg class="w-10 h-10 text-purple-400 group-hover:text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                    <p class='pt-1 text-sm tracking-wider text-gray-400 lowercase group-hover:text-purple-600'>upload either JPG, JPEG or PNG</p>
+                                  </div>
+                                  <input id="editPhoto" wire:model="editPhoto" accept=".jpg,.png,.jpeg" type="file" class="hidden" />
+                                  <div wire:loading wire:target="editPhoto"><span class="px-2 py-2 mt-5 text-white bg-green-300 rounded-md">Uploading..</span></div>
+                                  <p class="mt-4 text-xs italic text-center text-red-500">
+                                    {{ $fileError }}
+                                  </p>
+                            </label>
+                            @else
+                            <div class="flex flex-col mb-5">
+                                <?php
+                                  $tempPhoto = $photo->getClientOriginalName();
+                                  $extens = substr(strrchr($tempPhoto, '.'), 1);
+                                  $extens = strtoupper($extens);
+                                ?>
+                                @if($extens == "PNG" || $extens == "JPG" || $extens == "JPEG")
+                              <div>
+                                <img class="object-cover w-48 h-48 border border-indigo-100 rounded-md shadow-lg" src="{{$editPhoto->temporaryUrl()}}">
+                              </div>
+                              @endif
+                              <div>
+                                <p class='pt-1 text-sm font-bold tracking-wider text-center text-purple-600 lowercase'>{{$photo->getClientOriginalName()}}</p>
+                              </div>
+                              <div>
+                              <p class="mt-4 text-xs italic text-center text-red-500">
+                                {{ $fileError }}
+                              </p>
+                              </div>
+                              </div>
+                            @endif 
+                        </div>
+                      </div>
+                  @endif
 
 
 
@@ -234,7 +273,7 @@
               
                 <a href="#" class="flex flex-row items-center rounded-lg focus:outline-none focus:shadow-outline">
                   <img class="object-cover w-8 h-8 rounded-full" src="{{url('storage/profileImage/storage/'.$post['member']['image'])}}" alt="">
-                  <p class="ml-2 text-base font-medium">{{$post['member']['name']}}</p>
+                  <p class="ml-2 text-base font-medium">{{$post['member']['firstname']." ".$post['member']['lastname']}}</p>
                 </a>
               </div>
               <div class="flex flex-row items-center">
@@ -308,7 +347,7 @@
                                     </div>
                                     <div class="self-auto bg-gray-100 dark:bg-gray-700 rounded-3xl px-4 pt-2 pb-2.5">
                                       <div class="text-sm font-semibold leading-relaxed">
-                                        {{$comment['member']['name']}}
+                                        {{$comment['member']['firstname']." ".$comment['member']['lastname']}}
                                       </div>
                                       {{$comment['body']}}
                                       <?php $memberID = session()->get('memberID') ?>

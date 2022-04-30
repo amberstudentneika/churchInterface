@@ -48,7 +48,7 @@ class LiveProfilePhoto extends Component
     $memberID = session()->get('memberID');
        
         $ch=curl_init();
-        $url = 'http://192.168.0.9:8081/api/profile/show/'.$memberID;
+        $url = 'http://192.168.100.38:8081/api/profile/show/'.$memberID;
         $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
@@ -70,10 +70,9 @@ class LiveProfilePhoto extends Component
             $this->photo = $dataMember[0]['image'];
             $this->oldPhoto = $dataMember[0]['image'];
             // dd($this->oldPhoto);
-            $string=$dataMember[0]['name'];
-            $stringResult=explode(" ",$string);
-            $this->firstname=$stringResult[0];
-            $this->lastname=$stringResult[1]; 
+           
+            $this->firstname=$dataMember[0]['firstname'];
+            $this->lastname=$dataMember[0]['lastname']; 
             $this->gender=$dataMember[0]['gender'];   
             $this->password="isinactive";
             $this->password_confirmation="isinactive";
@@ -95,7 +94,7 @@ class LiveProfilePhoto extends Component
         }
 
         $memberID = session()->get('memberID');
-        $url = 'http://192.168.0.9:8081/api/profile/update/'.$memberID;
+        $url = 'http://192.168.100.38:8081/api/profile/update/'.$memberID;
         $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
@@ -127,15 +126,20 @@ class LiveProfilePhoto extends Component
           curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
           curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
           $results = curl_exec($ch); 
-        //   dd($results);
           $results = json_decode($results,true);
+        //   dd($results);
+          $data= $results['data'][0];
   
           curl_close($ch);
 
           $name = ucwords($this->firstname).' '.ucwords($this->lastname);
           $p=session()->put('memberImage',$photo);
           session()->put('memberName',$name);
-          return redirect()->route('adminFeed');
+          if($data['role']==1){
+              return redirect()->route('adminFeed');
+          }elseif($data['role']==3){
+            return redirect()->route('superAdminFeed');
+          }
         $this->clearField();
     }
     public function render()

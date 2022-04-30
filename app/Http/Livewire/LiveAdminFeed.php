@@ -83,7 +83,7 @@ class LiveAdminFeed extends Component
     public function onSubmit(){
        $this->validate();
       if($this->textPost == true){
-          if($this->photo==null || $this->photo==''){
+          if($this->photo == null || $this->photo == ''){
               $this->fileError='Please upload a photo.';
             }
             if($this->photo!=null){ 
@@ -97,7 +97,7 @@ class LiveAdminFeed extends Component
                     $this->photo->storePubliclyAs('storage',$photo,'gallery');
                     $mID=session()->get('memberID');
                     $ch=curl_init();
-                    $url = 'http://192.168.0.9:8081/api/post/store';
+                    $url = 'http://192.168.100.38:8081/api/post/store';
                     $data=array(
                         'categoryID'=>$this->cat,
                         'heading'=>$this->heading,
@@ -131,7 +131,7 @@ class LiveAdminFeed extends Component
 
       if($this->textPost == false){
             $ch=curl_init();
-            $url = 'http://192.168.0.9:8081/api/post/store';
+            $url = 'http://192.168.100.38:8081/api/post/store';
 
             $photo=$this->photo;
             $mID=session()->get('memberID');
@@ -169,7 +169,7 @@ class LiveAdminFeed extends Component
         $this->viewModal=true;
         $this->postID = $id;
         $ch=curl_init();
-        $url = 'http://192.168.0.9:8081/api/post/show/'.$this->postID;
+        $url = 'http://192.168.100.38:8081/api/post/show/'.$this->postID;
         $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
@@ -196,6 +196,7 @@ class LiveAdminFeed extends Component
         $this->editPhoto=$data['image'];
         $this->oldPhoto=$data['image'];
         $this->categoryListing=array_slice($results,3,1);
+        // dd($this->categoryListing);
         curl_close($ch);
     }
 
@@ -203,57 +204,82 @@ class LiveAdminFeed extends Component
         if($this->editCatID == null || $this->editHeading == null || $this->editContents == null ){
             session()->flash('error','Please ensure to fill all fields');
         }
+        // dd($this->editCatID); 
 
         $ch=curl_init();
-        $url = 'http://192.168.0.9:8081/api/post/update/'.$this->editPostID;
+        $url = 'http://192.168.100.38:8081/api/post/update/'.$this->editPostID;
         $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
             'Authorization: Bearer '.$memberToken
         ]; 
         
-        if($this->oldPhoto == $this->editPhoto)
+        if($this->editPhoto == null || $this->editPhoto == "no image")
         {
-            $editPhoto = $this->oldPhoto;
+            $data=array(
+                'categoryID'=>$this->editCatID,
+                'topicID'=>$this->topicID,
+                'heading'=>$this->editHeading,
+                'contents'=>$this->editContents,
+                'photo'=>$this->editPhoto,
+            );
+            // dd($data);
+            http_build_query($data);
+            curl_setopt($ch,CURLOPT_URL,$url);
+            curl_setopt($ch,CURLOPT_POST,true);
+            curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
+            curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+            curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
+            $results = curl_exec($ch);
+            // dd($results);
+            $results = json_decode($results,true);
+            curl_close($ch);
+            $this->clearField();
+            $this->hideModal();
         }
-        elseif($this->oldPhoto != $this->editPhoto)
-        {
-            $this->fileError = '';
-            $fileName=$this->editPhoto->getClientOriginalName();
-            $this->ext = substr(strrchr($fileName, '.'), 1);
-            $this->ext=strtoupper($this->ext);
-            if($this->ext == "PNG" || $this->ext == "JPG" || $this->ext == "JPEG")
-            {
-                $editPhoto=$this->editPhoto->getClientOriginalName();
-                $this->editPhoto->storePubliclyAs('storage',$editPhoto,'gallery');
-                $data=array(
-                    'categoryID'=>$this->editCatID,
-                    'topicID'=>$this->topicID,
-                    'heading'=>$this->editHeading,
-                    'contents'=>$this->editContents,
-                    'photo'=>$editPhoto,
-                );
-                // dd($data);
-                http_build_query($data);
-                curl_setopt($ch,CURLOPT_URL,$url);
-                curl_setopt($ch,CURLOPT_POST,true);
-                curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
-                curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-                curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
-                $results = curl_exec($ch);
-                // dd($results);
-                $results = json_decode($results,true);
-                curl_close($ch);
-                $this->clearField();
-                $this->hideModal();
-            }
-            else
-            {
-                // dd($this->fileError);
-                $this->fileError = "Unsupported File Format. only jpg,png,jpeg is accepted.";
-            }
-                
-        }
+        else{
+                if($this->oldPhoto == $this->editPhoto)
+                {
+                    $editPhoto = $this->oldPhoto;
+                }
+                elseif($this->oldPhoto != $this->editPhoto)
+                {
+                    $this->fileError = '';
+                    $fileName=$this->editPhoto->getClientOriginalName();
+                    $this->ext = substr(strrchr($fileName, '.'), 1);
+                    $this->ext=strtoupper($this->ext);
+                    if($this->ext == "PNG" || $this->ext == "JPG" || $this->ext == "JPEG")
+                    {
+                        $editPhoto=$this->editPhoto->getClientOriginalName();
+                        $this->editPhoto->storePubliclyAs('storage',$editPhoto,'gallery');
+                        $data=array(
+                            'categoryID'=>$this->editCatID,
+                            'topicID'=>$this->topicID,
+                            'heading'=>$this->editHeading,
+                            'contents'=>$this->editContents,
+                            'photo'=>$editPhoto,
+                        );
+                        
+                        http_build_query($data);
+                        curl_setopt($ch,CURLOPT_URL,$url);
+                        curl_setopt($ch,CURLOPT_POST,true);
+                        curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
+                        curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+                        curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
+                        $results = curl_exec($ch);
+                        // dd($results);
+                        $results = json_decode($results,true);
+                        curl_close($ch);
+                        $this->clearField();
+                        $this->hideModal();
+                    }
+                    else
+                    {
+                        // dd($this->fileError);
+                        $this->fileError = "Unsupported File Format. only jpg,png,jpeg is accepted.";
+                    }
+                }
+           }
         
        
     }
@@ -261,7 +287,7 @@ class LiveAdminFeed extends Component
     public function delete($id){
         $this->postID= $id;
         $ch=curl_init();
-        $url = 'http://192.168.0.9:8081/api/post/delete/'.$this->postID;
+        $url = 'http://192.168.100.38:8081/api/post/delete/'.$this->postID;
         $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
@@ -282,7 +308,7 @@ class LiveAdminFeed extends Component
 
     public function like($postID){
         $ch=curl_init();
-        $url = 'http://192.168.0.9:8081/api/like/store';
+        $url = 'http://192.168.100.38:8081/api/like/store';
         $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
@@ -311,7 +337,7 @@ class LiveAdminFeed extends Component
 
         public function submitComment($postID){
             $ch=curl_init();
-            $url = 'http://192.168.0.9:8081/api/comment/store';
+            $url = 'http://192.168.100.38:8081/api/comment/store';
             $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
@@ -356,7 +382,7 @@ class LiveAdminFeed extends Component
 
 public function deleteComment($commentID,$postID){
     $ch=curl_init();
-    $url = 'http://192.168.0.9:8081/api/comment/delete/'.$commentID;
+    $url = 'http://192.168.100.38:8081/api/comment/delete/'.$commentID;
     
     $memberID=session()->get('memberID');
     $memberToken=session()->get('memberToken');
@@ -382,7 +408,7 @@ public function deleteComment($commentID,$postID){
 
 public function showEditComment($commentID){
     $ch=curl_init();
-    $url = 'http://192.168.0.9:8081/api/comment/show/'.$commentID;
+    $url = 'http://192.168.100.38:8081/api/comment/show/'.$commentID;
     
     $memberToken=session()->get('memberToken');
     $headers=[
@@ -404,7 +430,7 @@ public function showEditComment($commentID){
 }
 public function editComment(){
     $ch=curl_init();
-    $url = 'http://192.168.0.9:8081/api/comment/update/'.$this->comID;
+    $url = 'http://192.168.100.38:8081/api/comment/update/'.$this->comID;
     $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
@@ -433,7 +459,7 @@ public function editComment(){
     {
         //view category
         $ch=curl_init();
-        $url = 'http://192.168.0.9:8081/api/category/index';
+        $url = 'http://192.168.100.38:8081/api/category/index';
         $memberToken=session()->get('memberToken');
         
         $headers=[
@@ -459,7 +485,7 @@ public function editComment(){
 
         //view posts
         $ch=curl_init();
-        $url = 'http://192.168.0.9:8081/api/post/index';
+        $url = 'http://192.168.100.38:8081/api/post/index';
         
         $memberToken=session()->get('memberToken');
         $headers=[

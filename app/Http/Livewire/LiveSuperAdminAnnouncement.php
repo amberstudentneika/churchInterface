@@ -44,8 +44,11 @@ class LiveSuperAdminAnnouncement extends Component
     public function updated($propertyName){
         $this->validateOnly($propertyName);
     }
+
     public function onSubmit(){
-        if($this->textPost == true){
+       
+        if($this->textPost == true)
+        {
             if($this->photo==null)
             {
                 $this->fileError='Please upload a photo.';
@@ -68,7 +71,7 @@ class LiveSuperAdminAnnouncement extends Component
                         'photo'=>$photo,
                     );
                     $ch=curl_init();
-                    $url = 'http://192.168.0.9:8081/api/announcement/store';
+                    $url = 'http://192.168.100.38:8081/api/announcement/store';
                     $memberToken=session()->get('memberToken');
                     $headers=[
                         'Accept: application/json',
@@ -94,6 +97,36 @@ class LiveSuperAdminAnnouncement extends Component
                
                     }
                 }
+        }elseif($this->textPost == false){
+            $memberID=session()->get('memberID');
+
+            $data=array(
+                'memberID'=>$memberID,
+                'heading'=>$this->heading,
+                'contents'=>$this->contents,
+                'photo'=> "no image",
+            );
+            $ch=curl_init();
+            $url = 'http://192.168.100.38:8081/api/announcement/store';
+            $memberToken=session()->get('memberToken');
+            $headers=[
+                'Accept: application/json',
+                'Authorization: Bearer '.$memberToken
+            ];
+
+            http_build_query($data);
+            curl_setopt($ch,CURLOPT_URL,$url);
+            curl_setopt($ch,CURLOPT_POST,true);
+            curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
+            curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+    
+            curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
+            $results = curl_exec($ch);
+            $results = json_decode($results,true);
+            curl_close($ch);
+            $this->textPost = false; 
+            $this->clearField();
+
         }
     }
    
@@ -103,7 +136,7 @@ public function showEdit($id){
     $this->viewModal=true;
     $this->announceID = $id;
     $ch=curl_init();
-    $url = 'http://192.168.0.9:8081/api/announcement/show/'.$this->announceID;
+    $url = 'http://192.168.100.38:8081/api/announcement/show/'.$this->announceID;
     $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
@@ -129,60 +162,90 @@ public function showEdit($id){
 }
 
     public function edit(){
-        if($this->heading == null || $this->contents == null ){
+        if($this->heading == null || $this->contents == null )
+        {
             session()->flash('error','Please ensure to fill all fields');
         }
 
-        if($this->editOldPhoto== $this->editPhoto)
+        if($this->editPhoto=="no image" || $this->editPhoto== null)
         {
-            $editPhoto = $this->editOldPhoto;
+            $ch=curl_init();
+            $url = 'http://192.168.100.38:8081/api/announcement/update/'.$this->announceID;
+            $memberToken=session()->get('memberToken');
+            $headers=[
+                'Accept: application/json',
+                'Authorization: Bearer '.$memberToken
+            ]; 
+            $data=array(
+                'heading'=>$this->heading,
+                'contents'=>$this->contents,
+                'photo'=> "no image",
+            );
+            http_build_query($data);
+            curl_setopt($ch,CURLOPT_URL,$url);
+            curl_setopt($ch,CURLOPT_POST,true);
+            curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
+            curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+            curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
+            $results = curl_exec($ch);
+            // dd($results);
+            $results = json_decode($results,true);
+            curl_close($ch);
+            $this->clearField();
+            $this->hideModal();
         }
-        elseif($this->editOldPhoto != $this->editPhoto)
-        {
-            $this->fileError = '';
-                $editPhoto=$this->editPhoto->getClientOriginalName();
-                $this->ext = substr(strrchr($editPhoto, '.'), 1);
-                $this->ext=strtoupper($this->ext);
-                if($this->ext == "PNG" || $this->ext == "JPG" || $this->ext == "JPEG")
+        else{
+                if($this->editOldPhoto== $this->editPhoto)
                 {
-                    $editPhoto=$this->editPhoto->getClientOriginalName();
-                    $this->editPhoto->storePubliclyAs('storage',$editPhoto,'gallery');
-                    $ch=curl_init();
-                    $url = 'http://192.168.0.9:8081/api/announcement/update/'.$this->announceID;
-                    $memberToken=session()->get('memberToken');
-                    $headers=[
-                        'Accept: application/json',
-                        'Authorization: Bearer '.$memberToken
-                    ]; 
-                    $data=array(
-                        'heading'=>$this->heading,
-                        'contents'=>$this->contents,
-                        'photo'=>$editPhoto,
-                    );
-                    http_build_query($data);
-                    curl_setopt($ch,CURLOPT_URL,$url);
-                    curl_setopt($ch,CURLOPT_POST,true);
-                    curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
-                    curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-                    curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
-                    $results = curl_exec($ch);
-                     // dd($results);
-                    $results = json_decode($results,true);
-                    curl_close($ch);
-                    $this->clearField();
-                    $this->hideModal();
+                    $editPhoto = $this->editOldPhoto;
                 }
-                else
+                elseif($this->editOldPhoto != $this->editPhoto)
                 {
-                    $this->fileError = "Unsupported File Format. only jpg,png,jpeg is accepted.";
-                }
+                    $this->fileError = '';
+                        $editPhoto=$this->editPhoto->getClientOriginalName();
+                        $this->ext = substr(strrchr($editPhoto, '.'), 1);
+                        $this->ext=strtoupper($this->ext);
+                        if($this->ext == "PNG" || $this->ext == "JPG" || $this->ext == "JPEG")
+                        {
+                            $editPhoto=$this->editPhoto->getClientOriginalName();
+                            $this->editPhoto->storePubliclyAs('storage',$editPhoto,'gallery');
+                            $ch=curl_init();
+                            $url = 'http://192.168.100.38:8081/api/announcement/update/'.$this->announceID;
+                            $memberToken=session()->get('memberToken');
+                            $headers=[
+                                'Accept: application/json',
+                                'Authorization: Bearer '.$memberToken
+                            ]; 
+                            $data=array(
+                                'heading'=>$this->heading,
+                                'contents'=>$this->contents,
+                                'photo'=>$editPhoto,
+                            );
+                            http_build_query($data);
+                            curl_setopt($ch,CURLOPT_URL,$url);
+                            curl_setopt($ch,CURLOPT_POST,true);
+                            curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
+                            curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+                            curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
+                            $results = curl_exec($ch);
+                            // dd($results);
+                            $results = json_decode($results,true);
+                            curl_close($ch);
+                            $this->clearField();
+                            $this->hideModal();
+                        }
+                        else
+                        {
+                            $this->fileError = "Unsupported File Format. only jpg,png,jpeg is accepted.";
+                        }
+                    }
             }
     }
 
     public function delete($id){
         $this->announceID= $id;
         $ch=curl_init();
-        $url = 'http://192.168.0.9:8081/api/announcement/delete/'.$this->announceID;
+        $url = 'http://192.168.100.38:8081/api/announcement/delete/'.$this->announceID;
         $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
@@ -200,7 +263,7 @@ public function showEdit($id){
     {
          //view Announcements
          $ch=curl_init();
-         $url = 'http://192.168.0.9:8081/api/announcement/index';
+         $url = 'http://192.168.100.38:8081/api/announcement/index';
          $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
