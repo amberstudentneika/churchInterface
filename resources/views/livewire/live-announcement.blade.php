@@ -117,7 +117,7 @@
       <div  class="container w-11/12 max-w-lg mx-auto md:w-2/3">
               <div class="relative px-5 py-8 bg-white border border-gray-400 rounded shadow-md md:px-10">
                  
-                   <h1 class="mb-4 font-bold leading-tight tracking-normal text-center text-gray-800 font-lg">Edit Post</h1> 
+                   <h1 class="mb-4 font-bold leading-tight tracking-normal text-center text-gray-800 font-lg">Edit Announcement</h1> 
                 
                  <label class="text-sm font-bold leading-tight tracking-normal text-gray-800">Heading</label>
                   <input wire:model="heading"  class="flex items-center w-full h-10 pl-3 mt-2 mb-5 text-sm font-normal text-gray-600 border border-gray-300 rounded focus:outline-none focus:border focus:border-indigo-700" placeholder="" />
