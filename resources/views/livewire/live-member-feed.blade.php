@@ -21,7 +21,7 @@
                 <div class="flex items-center justify-between">
                   <a href="#" class="flex flex-row items-center rounded-lg focus:outline-none focus:shadow-outline">
                     <img class="object-cover w-8 h-8 rounded-full" src="{{url('storage/profileImage/storage/'.$post['member']['image'])}}" alt="">
-                    <p class="ml-2 text-base font-medium">{{$post['member']['name']}}</p>
+                    <p class="ml-2 text-base font-medium">{{$post['member']['firstname']." ".$post['member']['lastname']}}</p>
                   </a>
                 <span class="font-light text-gray-600"></span>
                   <a href="#"
@@ -131,7 +131,7 @@
                                     </div>
                                     <div class="self-auto bg-gray-100 dark:bg-gray-700 rounded-3xl px-4 pt-2 pb-2.5">
                                       <div class="text-sm font-semibold leading-relaxed">
-                                        {{$comment['member']['name']}}
+                                        {{$comment['member']['firstname']." ".$comment['member']['lastname']}}
                                       </div>
                                       {{$comment['body']}}
                                       <?php $memberID = session()->get('memberID') ?>
@@ -180,7 +180,7 @@
                   <li class="flex items-center"><img
                     src="{{url('storage/profileImage/storage/'.$authors['image'])}}"
                     alt="profile" class="object-cover w-10 h-10 mx-4 rounded-full">
-                  <p><a href="#" class="mx-1 font-bold text-gray-700 hover:underline">{{$authors['name']}}</a><span
+                  <p><a href="#" class="mx-1 font-bold text-gray-700 hover:underline">{{$authors['firstname']." ".$authors['lastname']}}</a><span
                         class="text-sm font-light text-gray-700">Created {{$authors['totalPosts']}} Posts</span></p>
                   </li>
                   @endif
@@ -224,7 +224,7 @@
                     <div class="flex items-center"><img
                             src="{{url('storage/profileImage/storage/'.$dataAnnouncement['member']['image'])}}"
                             alt="avatar" class="object-cover w-8 h-8 rounded-full"><a href="#"
-                            class="mx-3 text-sm text-gray-700 hover:underline">{{$dataAnnouncement['member']['name']}}</a></div><span
+                            class="mx-3 text-sm text-gray-700 hover:underline">{{$dataAnnouncement['member']['firstname']." ".$dataAnnouncement['member']['lastname']}}</a></div><span
                         class="text-sm font-light text-gray-600">{{\Carbon\Carbon::parse($dataAnnouncement['created_at'])->diffForHumans()}}</span>
                 </div>
             </div>

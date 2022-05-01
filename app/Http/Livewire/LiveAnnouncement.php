@@ -197,7 +197,7 @@ public function showEdit($id){
             $this->hideModal();
         }
         else{
-                if($this->editOldPhoto== $this->editPhoto)
+                if($this->editOldPhoto == $this->editPhoto)
                 {
                     $editPhoto = $this->editOldPhoto;
                 }
@@ -230,7 +230,7 @@ public function showEdit($id){
                             curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
                             curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
                             $results = curl_exec($ch);
-                            // dd($results);
+                            dd($results);
                             $results = json_decode($results,true);
                             curl_close($ch);
                             $this->clearField();

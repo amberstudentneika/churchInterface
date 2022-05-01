@@ -16,7 +16,7 @@
             <div class="flex flex-row items-center">
               <a href="#" class="flex flex-row items-center rounded-lg focus:outline-none focus:shadow-outline">
                 <img class="object-cover w-8 h-8 rounded-full" src="{{url('storage/profileImage/storage/'.$announce['member']['image'])}}" alt="">
-                <p class="ml-2 text-base font-medium">{{$announce['member']['name']}}</p>
+                <p class="ml-2 text-base font-medium">{{$announce['member']['firstname']." ".$announce['member']['lastname']}}</p>
               </a>
             </div>
             <div class="flex flex-row items-center">

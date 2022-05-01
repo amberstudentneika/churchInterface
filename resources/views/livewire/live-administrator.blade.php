@@ -243,7 +243,7 @@
                                 <td class="p-2 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0 w-10 h-10 mr-2 sm:mr-3"><img class="rounded-full" src="{{url('storage/profileImage/storage/'.$info['image'])}}" width="40" height="40" alt="Alex Shatov"></div>
-                                        <div class="font-medium text-gray-800">{{$info['name']}}</div>
+                                        <div class="font-medium text-gray-800">{{$info['firstname']." ".$info['lastname']}}</div>
                                     </div>
                                 </td>
                                 <td class="p-2 whitespace-nowrap">

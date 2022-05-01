@@ -69,10 +69,9 @@ class LiveMemberEditProfile extends Component
             $this->photo = $dataMember[0]['image'];
             $this->oldPhoto = $dataMember[0]['image'];
             // dd($this->oldPhoto);
-            $string=$dataMember[0]['name'];
-            $stringResult=explode(" ",$string);
-            $this->firstname=$stringResult[0];
-            $this->lastname=$stringResult[1]; 
+           ;
+            $this->firstname= $dataMember[0]['firstname'];
+            $this->lastname= $dataMember[0]['lastname']; 
             $this->gender=$dataMember[0]['gender'];   
             $this->password="isinactive";
             $this->password_confirmation="isinactive";
