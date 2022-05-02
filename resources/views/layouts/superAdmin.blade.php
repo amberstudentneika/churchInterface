@@ -21,17 +21,90 @@
 
 <body class="h-screen font-sans antialiased leading-none bg-gray-100">
 <div id="app">
-     <!-- component -->
-<div class="flex flex-row flex-wrap w-full">
- <header class="grid w-full py-6 mx-auto bg-blue-900 grid-col">
-    {{-- <div class="px-6 bg-red-900"> --}}
-        <div>
-            <p class="flex justify-center text-lg font-semibold font-extrabold text-gray-100 no-underline">
-               Lewis Ministry
-            </p>
-        </div>
-</header>
+     {{--  --}}
 
+  <nav class="flex justify-center bg-blue-900 p-3 flex-wrap">
+  <a href="#" class="p-2 mr-4 flex justify-center">
+{{--   
+      <svg xmlns="http://www.w3.org/2000/svg" class="fill-current text-white h-8 w-8 mr-2" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+      </svg> --}}
+    
+      <span class="text-xl  text-white font-bold uppercase tracking-wide"
+      >Lewis Ministry</span>
+   
+  </a>
+  <button
+    class="text-white inline-flex p-3 bg-blue-700 hover:bg-gray-900 rounded lg:hidden ml-auto hover:text-white outline-none nav-toggler"
+    data-target="#navigation"
+  >
+    <i class="material-icons">menu</i>
+  </button>
+  <div
+    class="hidden top-navbar w-full "
+    id="navigation"
+  >
+    <div
+      class="lg:inline-flex lg:flex-row lg:ml-auto lg:w-auto w-full lg:items-center items-start  flex flex-col lg:h-auto"
+    >
+      <a
+      href="{{route('superAdminCategory')}}"
+        class="lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white"
+      >
+        <span>Category</span>
+      </a>
+      <a
+      href="{{route('superAdminFeed')}}"
+        class="lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white"
+      >
+        <span>Feeds</span>
+      </a>
+      <a
+      href="{{route('superAdminAnnouncement')}}"
+        class="lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white"
+      >
+        <span>Announcements</span>
+      </a>
+      <a
+      href="{{route('administrator')}}"
+        class="lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white"
+      >
+        <span>Users</span>
+      </a>
+      <a
+      href="{{route('superAdminEditProfile')}}"
+        class="lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white"
+      >
+        <span>Edit Profile</span>
+      </a>
+      <a
+      href="{{route('logout')}}"
+        class="lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white"
+      >
+        <span>Logout</span>
+      </a>
+      
+    </div>
+  </div>
+</nav>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+<script>
+$(document).ready(function() {
+$(".nav-toggler").each(function(_, navToggler) {
+var target = $(navToggler).data("target");
+$(navToggler).on("click", function() {
+  $(target).animate({
+    height: "toggle"
+  });
+});
+});
+});
+
+</script>
+     {{--  --}}
+<div class="flex flex-row flex-wrap w-full">
+ 
 
   <div class="flex flex-row flex-wrap justify-center w-full h-screen bg-indigo-100 ">
     
