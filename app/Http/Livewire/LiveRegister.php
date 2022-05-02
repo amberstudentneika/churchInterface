@@ -32,7 +32,7 @@ class LiveRegister extends Component
         $this->validate();
 
         $ch=curl_init();
-        $url = 'http://192.168.100.38:8081/api/register';
+        $url = 'https://api.shaneika.fimijm.com/api/register';
         $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',

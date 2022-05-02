@@ -22,7 +22,7 @@ class LiveLogin extends Component
         $this->validate();
 
         $ch=curl_init();
-        $url = 'http://192.168.100.38:8081/api/login';
+        $url = 'https://api.shaneika.fimijm.com/api/login';
         
         $data=array(
             'email'=>$this->email,

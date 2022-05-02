@@ -21,91 +21,25 @@
 
 <body class="h-screen font-sans antialiased leading-none bg-gray-100">
 <div id="app">
-    
-<nav class="flex justify-center bg-blue-900 p-3 flex-wrap">
-  <a href="#" class="p-2 mr-4 flex justify-center">
-{{--   
-      <svg xmlns="http://www.w3.org/2000/svg" class="fill-current text-white h-8 w-8 mr-2" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
-      </svg> --}}
-    
-      <span class="text-xl  text-white font-bold uppercase tracking-wide"
-      >Lewis Ministry</span>
-   
-  </a>
-  <button
-    class="text-white inline-flex p-3 bg-blue-700 hover:bg-gray-900 rounded lg:hidden ml-auto hover:text-white outline-none nav-toggler"
-    data-target="#navigation"
-  >
-    <i class="material-icons">menu</i>
-  </button>
-  <div
-    class="hidden top-navbar w-full "
-    id="navigation"
-  >
-    <div
-      class="lg:inline-flex lg:flex-row lg:ml-auto lg:w-auto w-full lg:items-center items-start  flex flex-col lg:h-auto"
-    >
-      <a
-      href="{{route('adminCategory')}}"
-        class="lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white"
-      >
-        <span>Category</span>
-      </a>
-      <a
-      href="{{route('adminFeed')}}"
-        class="lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white"
-      >
-        <span>Feeds</span>
-      </a>
-      <a
-      href="{{route('adminAnnouncement')}}"
-        class="lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white"
-      >
-        <span>Announcements</span>
-      </a>
-      <a
-      href="{{route('editProfilePhotoAdmin')}}"
-        class="lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white"
-      >
-        <span>Edit Profile</span>
-      </a>
-      <a
-      href="{{route('logout')}}"
-        class="lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white"
-      >
-        <span>Logout</span>
-      </a>
-      
-    </div>
-  </div>
-</nav>
+     <!-- component -->
+<div class="flex flex-row flex-wrap w-full">
+ <header class="grid w-full py-6 mx-auto bg-blue-900 grid-col">
+    {{-- <div class="px-6 bg-red-900"> --}}
+        <div>
+            <p class="flex justify-center text-lg font-semibold font-extrabold text-gray-100 no-underline">
+               Lewis Ministry
+            </p>
+        </div>
+</header>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
-<script>
-$(document).ready(function() {
-$(".nav-toggler").each(function(_, navToggler) {
-var target = $(navToggler).data("target");
-$(navToggler).on("click", function() {
-  $(target).animate({
-    height: "toggle"
-  });
-});
-});
-});
-
-</script>
-
-
-    <div class="flex flex-row flex-wrap w-full">
 
   <div class="flex flex-row flex-wrap justify-center w-full h-screen bg-indigo-100 ">
     
     <!-- Begin Navbar -->
     
-    {{-- <div class="absolute bottom-0 flex flex-row flex-wrap w-full bg-white border-t-4 border-indigo-500 shadow-lg md:w-0 md:hidden">
+    <div class="absolute bottom-0 flex flex-row flex-wrap w-full bg-white border-t-4 border-indigo-500 shadow-lg md:w-0 md:hidden">
       <div class="w-full text-right"><button class="p-2 text-4xl text-black fa fa-bars"></button></div>
-    </div> --}}
+    </div>
     
     <div class="w-0 h-0 overflow-y-hidden bg-white shadow-lg md:w-1/4 lg:w-1/5 md:h-screen">
       <div class="sticky top-0 p-5 bg-white">
@@ -149,7 +83,8 @@ $(navToggler).on("click", function() {
         <a class="w-full p-3 text-xl font-semibold text-left text-black bg-white border-t-2 border-gray-200 hover:bg-blue-200 hover:bg-blue-300" href="{{route('adminAnnouncement')}}">
           <svg xmlns="http://www.w3.org/2000/svg" class="float-right pt-1 pr-1 text-2xl text-black w-7 h-7" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M18 3a1 1 0 00-1.447-.894L8.763 6H5a3 3 0 000 6h.28l1.771 5.316A1 1 0 008 18h1a1 1 0 001-1v-4.382l6.553 3.276A1 1 0 0018 15V3z" clip-rule="evenodd" />
-          </svg>Announcements</a>
+          </svg>
+          Announcements</a>
         <a class="w-full p-3 text-xl font-semibold text-left text-black bg-white border-t-2 border-gray-200 hover:bg-blue-200 hover:bg-blue-300" href="{{route('editProfilePhotoAdmin')}}">
           <svg xmlns="http://www.w3.org/2000/svg" class="float-right pt-1 pr-1 text-2xl text-black w-7 h-7" viewBox="0 0 20 20" fill="currentColor">
             <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />

@@ -48,7 +48,7 @@ class LiveProfilePhoto extends Component
     $memberID = session()->get('memberID');
        
         $ch=curl_init();
-        $url = 'http://192.168.100.38:8081/api/profile/show/'.$memberID;
+        $url = 'https://api.shaneika.fimijm.com/api/profile/show/'.$memberID;
         $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
@@ -94,7 +94,7 @@ class LiveProfilePhoto extends Component
         }
 
         $memberID = session()->get('memberID');
-        $url = 'http://192.168.100.38:8081/api/profile/update/'.$memberID;
+        $url = 'https://api.shaneika.fimijm.com/api/profile/update/'.$memberID;
         $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',

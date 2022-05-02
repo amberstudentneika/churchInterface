@@ -30,7 +30,7 @@ class LiveAdministrator extends Component
     }
     public function removeUser($id){
         $ch=curl_init();
-        $url = 'http://192.168.100.38:8081/api/deactivate/user/'.$id;
+        $url = 'https://api.shaneika.fimijm.com/api/deactivate/user/'.$id;
         $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
@@ -51,7 +51,7 @@ class LiveAdministrator extends Component
 
 public function makeAdmin($id){
     $ch=curl_init();
-    $url = 'http://192.168.100.38:8081/api/member/role/update/admin/'.$id;
+    $url = 'https://api.shaneika.fimijm.com/api/member/role/update/admin/'.$id;
     $memberToken=session()->get('memberToken');
     $headers=[
         'Accept: application/json',
@@ -77,7 +77,7 @@ public function makeAdmin($id){
 
     public function revokeRole($id){
     $ch=curl_init();
-    $url = 'http://192.168.100.38:8081/api/admin/role/update/member/'.$id;
+    $url = 'https://api.shaneika.fimijm.com/api/admin/role/update/member/'.$id;
     $memberToken=session()->get('memberToken');
     $headers=[
         'Accept: application/json',
@@ -102,7 +102,7 @@ public function makeAdmin($id){
     }
     public function ReactivateUsers($id){
     $ch=curl_init();
-    $url = 'http://192.168.100.38:8081/api/reactivate/user/'.$id;
+    $url = 'https://api.shaneika.fimijm.com/api/reactivate/user/'.$id;
     $memberToken=session()->get('memberToken');
     $headers=[
         'Accept: application/json',
@@ -125,7 +125,7 @@ public function makeAdmin($id){
     {
          //view Users
          $ch=curl_init();
-         $url = 'http://192.168.100.38:8081/api/member/index';
+         $url = 'https://api.shaneika.fimijm.com/api/member/index';
          $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',

@@ -71,7 +71,7 @@ class LiveSuperAdminAnnouncement extends Component
                         'photo'=>$photo,
                     );
                     $ch=curl_init();
-                    $url = 'http://192.168.100.38:8081/api/announcement/store';
+                    $url = 'https://api.shaneika.fimijm.com/api/announcement/store';
                     $memberToken=session()->get('memberToken');
                     $headers=[
                         'Accept: application/json',
@@ -107,7 +107,7 @@ class LiveSuperAdminAnnouncement extends Component
                 'photo'=> "no image",
             );
             $ch=curl_init();
-            $url = 'http://192.168.100.38:8081/api/announcement/store';
+            $url = 'https://api.shaneika.fimijm.com/api/announcement/store';
             $memberToken=session()->get('memberToken');
             $headers=[
                 'Accept: application/json',
@@ -136,7 +136,7 @@ public function showEdit($id){
     $this->viewModal=true;
     $this->announceID = $id;
     $ch=curl_init();
-    $url = 'http://192.168.100.38:8081/api/announcement/show/'.$this->announceID;
+    $url = 'https://api.shaneika.fimijm.com/api/announcement/show/'.$this->announceID;
     $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
@@ -170,7 +170,7 @@ public function showEdit($id){
         if($this->editPhoto=="no image" || $this->editPhoto== null)
         {
             $ch=curl_init();
-            $url = 'http://192.168.100.38:8081/api/announcement/update/'.$this->announceID;
+            $url = 'https://api.shaneika.fimijm.com/api/announcement/update/'.$this->announceID;
             $memberToken=session()->get('memberToken');
             $headers=[
                 'Accept: application/json',
@@ -210,7 +210,7 @@ public function showEdit($id){
                             $editPhoto=$this->editPhoto->getClientOriginalName();
                             $this->editPhoto->storePubliclyAs('storage',$editPhoto,'gallery');
                             $ch=curl_init();
-                            $url = 'http://192.168.100.38:8081/api/announcement/update/'.$this->announceID;
+                            $url = 'https://api.shaneika.fimijm.com/api/announcement/update/'.$this->announceID;
                             $memberToken=session()->get('memberToken');
                             $headers=[
                                 'Accept: application/json',
@@ -245,7 +245,7 @@ public function showEdit($id){
     public function delete($id){
         $this->announceID= $id;
         $ch=curl_init();
-        $url = 'http://192.168.100.38:8081/api/announcement/delete/'.$this->announceID;
+        $url = 'https://api.shaneika.fimijm.com/api/announcement/delete/'.$this->announceID;
         $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
@@ -263,7 +263,7 @@ public function showEdit($id){
     {
          //view Announcements
          $ch=curl_init();
-         $url = 'http://192.168.100.38:8081/api/announcement/index';
+         $url = 'https://api.shaneika.fimijm.com/api/announcement/index';
          $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',

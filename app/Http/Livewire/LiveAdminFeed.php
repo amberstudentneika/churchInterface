@@ -97,7 +97,7 @@ class LiveAdminFeed extends Component
                     $this->photo->storePubliclyAs('storage',$photo,'gallery');
                     $mID=session()->get('memberID');
                     $ch=curl_init();
-                    $url = 'http://192.168.100.38:8081/api/post/store';
+                    $url = 'https://api.shaneika.fimijm.com/api/post/store';
                     $data=array(
                         'categoryID'=>$this->cat,
                         'heading'=>$this->heading,
@@ -131,7 +131,7 @@ class LiveAdminFeed extends Component
 
       if($this->textPost == false){
             $ch=curl_init();
-            $url = 'http://192.168.100.38:8081/api/post/store';
+            $url = 'https://api.shaneika.fimijm.com/api/post/store';
 
             $photo=$this->photo;
             $mID=session()->get('memberID');
@@ -169,7 +169,7 @@ class LiveAdminFeed extends Component
         $this->viewModal=true;
         $this->postID = $id;
         $ch=curl_init();
-        $url = 'http://192.168.100.38:8081/api/post/show/'.$this->postID;
+        $url = 'https://api.shaneika.fimijm.com/api/post/show/'.$this->postID;
         $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
@@ -207,7 +207,7 @@ class LiveAdminFeed extends Component
         // dd($this->editCatID); 
 
         $ch=curl_init();
-        $url = 'http://192.168.100.38:8081/api/post/update/'.$this->editPostID;
+        $url = 'https://api.shaneika.fimijm.com/api/post/update/'.$this->editPostID;
         $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
@@ -287,7 +287,7 @@ class LiveAdminFeed extends Component
     public function delete($id){
         $this->postID= $id;
         $ch=curl_init();
-        $url = 'http://192.168.100.38:8081/api/post/delete/'.$this->postID;
+        $url = 'https://api.shaneika.fimijm.com/api/post/delete/'.$this->postID;
         $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
@@ -308,7 +308,7 @@ class LiveAdminFeed extends Component
 
     public function like($postID){
         $ch=curl_init();
-        $url = 'http://192.168.100.38:8081/api/like/store';
+        $url = 'https://api.shaneika.fimijm.com/api/like/store';
         $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
@@ -337,7 +337,7 @@ class LiveAdminFeed extends Component
 
         public function submitComment($postID){
             $ch=curl_init();
-            $url = 'http://192.168.100.38:8081/api/comment/store';
+            $url = 'https://api.shaneika.fimijm.com/api/comment/store';
             $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
@@ -382,7 +382,7 @@ class LiveAdminFeed extends Component
 
 public function deleteComment($commentID,$postID){
     $ch=curl_init();
-    $url = 'http://192.168.100.38:8081/api/comment/delete/'.$commentID;
+    $url = 'https://api.shaneika.fimijm.com/api/comment/delete/'.$commentID;
     
     $memberID=session()->get('memberID');
     $memberToken=session()->get('memberToken');
@@ -408,7 +408,7 @@ public function deleteComment($commentID,$postID){
 
 public function showEditComment($commentID){
     $ch=curl_init();
-    $url = 'http://192.168.100.38:8081/api/comment/show/'.$commentID;
+    $url = 'https://api.shaneika.fimijm.com/api/comment/show/'.$commentID;
     
     $memberToken=session()->get('memberToken');
     $headers=[
@@ -430,7 +430,7 @@ public function showEditComment($commentID){
 }
 public function editComment(){
     $ch=curl_init();
-    $url = 'http://192.168.100.38:8081/api/comment/update/'.$this->comID;
+    $url = 'https://api.shaneika.fimijm.com/api/comment/update/'.$this->comID;
     $memberToken=session()->get('memberToken');
         $headers=[
             'Accept: application/json',
@@ -459,7 +459,7 @@ public function editComment(){
     {
         //view category
         $ch=curl_init();
-        $url = 'http://192.168.100.38:8081/api/category/index';
+        $url = 'https://api.shaneika.fimijm.com/api/category/index';
         $memberToken=session()->get('memberToken');
         
         $headers=[
@@ -485,7 +485,7 @@ public function editComment(){
 
         //view posts
         $ch=curl_init();
-        $url = 'http://192.168.100.38:8081/api/post/index';
+        $url = 'https://api.shaneika.fimijm.com/api/post/index';
         
         $memberToken=session()->get('memberToken');
         $headers=[
