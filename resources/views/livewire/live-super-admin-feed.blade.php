@@ -5,7 +5,7 @@
     
 
         <div class="grid grid-cols-1 gap-6 px-4 md:px-6 lg:px-8">
-          <div class="w-1/2 max-w-xl px-4 py-4 mx-auto bg-white rounded-lg shadow-md">
+          <div class="max-w-4xl px-10 py-6 mx-auto bg-white rounded-lg shadow-md">
                 <div class="flex justify-center">
                  <p class="font-bold text-cool-gray-500">POST</p>
                 </div>
